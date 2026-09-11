@@ -191,10 +191,3 @@ Contributions are welcome. If you want to propose improvements:
 3. Commit your changes
 4. Open a pull request with a clear description
 
----
-
-## License
-
-No license has been specified yet.
-
-If you plan to open-source this project, consider adding a standard license (e.g., MIT, Apache-2.0).
