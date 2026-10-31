@@ -1,0 +1,49 @@
+{
+  "track": "live",
+  "models": [
+    "qwen2.5:1.5b",
+    "qwen3.5:2b",
+    "qwen2.5:3b",
+    "llama3.2:3b",
+    "qwen3.5:latest"
+  ],
+  "modes": [
+    "closed",
+    "rag",
+    "agent"
+  ],
+  "repeats": 1,
+  "limit": null,
+  "categories": [],
+  "dataset": "bench/datasets/live.jsonl",
+  "dataset_sha256": "e237d6a69f755eaa9a1132c221bc3f53d86ac743730972c3fa9961509382cf5b",
+  "ollamasearch_version": "0.2.0",
+  "ollama_server_version": "0.18.1",
+  "python": "3.14.8",
+  "started_at": "2026-10-31T20:09:56+00:00",
+  "settings": {
+    "ollama_host": null,
+    "model": "qwen3.5:2b",
+    "searxng_url": "http://127.0.0.1:8080",
+    "backend": "searxng",
+    "top_k": 5,
+    "search_timeout": 15.0,
+    "connect_timeout": 5.0,
+    "read_timeout": 15.0,
+    "max_page_bytes": 3000000,
+    "fetch_concurrency": 8,
+    "per_host_concurrency": 2,
+    "use_truststore": true,
+    "cache_dir": "~/.cache/ollamasearch",
+    "source_char_budget": 1500,
+    "context_char_budget": 6000,
+    "passage_chars": 500,
+    "think": false,
+    "temperature": 0.0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "max_tokens": 1024,
+    "agent_max_steps": 4,
+    "llm_timeout": 600.0
+  }
+}

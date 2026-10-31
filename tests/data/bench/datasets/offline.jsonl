@@ -1,0 +1,4 @@
+{"id": "t-001", "question": "What is the population of Zarnitsa-on-Ural?", "lang": "en", "answers": ["7420"], "category": "single-hop", "gold_urls": ["http://corpus.local/zarnitsa.html"]}
+{"id": "t-002", "question": "In what year was the company that built the Orlek Bridge founded?", "lang": "en", "answers": ["1987"], "category": "multi-hop", "gold_urls": ["http://corpus.local/orlek-bridge.html", "http://corpus.local/tamarisk.html"]}
+{"id": "t-003", "question": "Какова максимальная глубина озера Тенгизколь?", "lang": "ru", "answers": ["48 метров", "48 m", "48 meters", "48"], "category": "multilingual", "gold_urls": ["http://corpus.local/tengizkol.html"]}
+{"id": "t-004", "question": "What is the phone number of the Zarnitsa-on-Ural mayor's office?", "lang": "en", "answers": [], "category": "unanswerable", "gold_urls": []}

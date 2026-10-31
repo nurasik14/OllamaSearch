@@ -1,0 +1,21 @@
+# Minimal SearXNG settings for ollamasearch.
+# Everything not listed here falls back to SearXNG's defaults (use_default_settings).
+#
+# server.secret_key is NOT set here on purpose: SearXNG reads it from the
+# SEARXNG_SECRET environment variable (see compose.yaml). Never commit a secret.
+use_default_settings: true
+
+general:
+  instance_name: "ollamasearch"
+
+server:
+  limiter: false        # local, single-user instance: no rate limiting / bot detection
+  image_proxy: false
+  public_instance: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  formats:
+    - html
+    - json              # required: ollamasearch uses /search?format=json

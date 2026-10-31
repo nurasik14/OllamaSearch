@@ -1,0 +1,518 @@
+{
+  "meta": {
+    "track": "live",
+    "models": [
+      "qwen2.5:1.5b",
+      "qwen3.5:2b",
+      "qwen2.5:3b",
+      "llama3.2:3b",
+      "qwen3.5:latest"
+    ],
+    "modes": [
+      "closed",
+      "rag",
+      "agent"
+    ],
+    "repeats": 1,
+    "limit": null,
+    "categories": [],
+    "dataset": "bench/datasets/live.jsonl",
+    "dataset_sha256": "e237d6a69f755eaa9a1132c221bc3f53d86ac743730972c3fa9961509382cf5b",
+    "ollamasearch_version": "0.2.0",
+    "ollama_server_version": "0.18.1",
+    "python": "3.14.8",
+    "started_at": "2026-10-31T20:09:56+00:00",
+    "settings": {
+      "ollama_host": null,
+      "model": "qwen3.5:2b",
+      "searxng_url": "http://127.0.0.1:8080",
+      "backend": "searxng",
+      "top_k": 5,
+      "search_timeout": 15.0,
+      "connect_timeout": 5.0,
+      "read_timeout": 15.0,
+      "max_page_bytes": 3000000,
+      "fetch_concurrency": 8,
+      "per_host_concurrency": 2,
+      "use_truststore": true,
+      "cache_dir": "~/.cache/ollamasearch",
+      "source_char_budget": 1500,
+      "context_char_budget": 6000,
+      "passage_chars": 500,
+      "think": false,
+      "temperature": 0.0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "max_tokens": 1024,
+      "agent_max_steps": 4,
+      "llm_timeout": 600.0
+    }
+  },
+  "groups": [
+    {
+      "model": "llama3.2:3b",
+      "mode": "agent",
+      "n": 20,
+      "accuracy": 0.75,
+      "answerable_accuracy": 0.75,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.1,
+      "stale_rate": null,
+      "citation_hit_rate": 0.0,
+      "gold_in_context_rate": 0.8333333333333334,
+      "by_category": {
+        "multi-hop": 0.6666666666666666,
+        "single-hop": 0.7647058823529411
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 0.25,
+        "ru": 0.5
+      },
+      "latency_p50_s": 2.000506916998347,
+      "latency_p95_s": 22.016762370599828,
+      "latency_mean_s": 6.5131882255001985,
+      "tokens_per_s": 83.48990043724044,
+      "mean_prompt_tokens": 1057.5,
+      "mean_eval_tokens": 64.8,
+      "error_rate": 0.0,
+      "agent": {
+        "tool_calls_per_question": 1.15,
+        "invalid_call_rate": 0.043478260869565216,
+        "searched_rate": 0.9,
+        "fetched_rate": 0.05,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 2.1
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "closed",
+      "n": 20,
+      "accuracy": 0.75,
+      "answerable_accuracy": 0.75,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.05,
+      "stale_rate": null,
+      "citation_hit_rate": null,
+      "gold_in_context_rate": null,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 0.7058823529411765
+      },
+      "by_lang": {
+        "en": 0.9166666666666666,
+        "kk": 0.25,
+        "ru": 0.75
+      },
+      "latency_p50_s": 0.27009625200116716,
+      "latency_p95_s": 0.5799502576017415,
+      "latency_mean_s": 0.37062621809945995,
+      "tokens_per_s": 88.50106080794347,
+      "mean_prompt_tokens": 87.45,
+      "mean_eval_tokens": 14.35,
+      "error_rate": 0.0
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "rag",
+      "n": 20,
+      "accuracy": 0.95,
+      "answerable_accuracy": 0.95,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.0,
+      "stale_rate": null,
+      "citation_hit_rate": 0.5833333333333334,
+      "gold_in_context_rate": 0.8333333333333334,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 0.9411764705882353
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 0.75,
+        "ru": 1.0
+      },
+      "latency_p50_s": 2.2041421915000683,
+      "latency_p95_s": 36.723901961901355,
+      "latency_mean_s": 6.020276284200008,
+      "tokens_per_s": 75.36403869023884,
+      "mean_prompt_tokens": 2303.6,
+      "mean_eval_tokens": 36.85,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "agent",
+      "n": 20,
+      "accuracy": 0.6,
+      "answerable_accuracy": 0.6,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.15,
+      "stale_rate": null,
+      "citation_hit_rate": 0.0,
+      "gold_in_context_rate": 0.0,
+      "by_category": {
+        "multi-hop": 0.3333333333333333,
+        "single-hop": 0.6470588235294118
+      },
+      "by_lang": {
+        "en": 0.75,
+        "kk": 0.25,
+        "ru": 0.5
+      },
+      "latency_p50_s": 0.2319387169991387,
+      "latency_p95_s": 1.762913647499409,
+      "latency_mean_s": 0.4933375723994686,
+      "tokens_per_s": 158.27497509813492,
+      "mean_prompt_tokens": 412.6,
+      "mean_eval_tokens": 57.4,
+      "error_rate": 0.0,
+      "agent": {
+        "tool_calls_per_question": 0.0,
+        "invalid_call_rate": null,
+        "searched_rate": 0.0,
+        "fetched_rate": 0.0,
+        "text_tool_call_rate": null,
+        "step_limit_rate": 0.0,
+        "mean_steps": 1.0
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "closed",
+      "n": 20,
+      "accuracy": 0.5,
+      "answerable_accuracy": 0.5,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.1,
+      "stale_rate": null,
+      "citation_hit_rate": null,
+      "gold_in_context_rate": null,
+      "by_category": {
+        "multi-hop": 0.6666666666666666,
+        "single-hop": 0.47058823529411764
+      },
+      "by_lang": {
+        "en": 0.6666666666666666,
+        "kk": 0.0,
+        "ru": 0.5
+      },
+      "latency_p50_s": 0.1703781899977912,
+      "latency_p95_s": 1.1460390757511052,
+      "latency_mean_s": 0.32335095934977287,
+      "tokens_per_s": 162.5588692170243,
+      "mean_prompt_tokens": 75.6,
+      "mean_eval_tokens": 26.75,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "rag",
+      "n": 20,
+      "accuracy": 1.0,
+      "answerable_accuracy": 1.0,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.0,
+      "stale_rate": null,
+      "citation_hit_rate": 0.08333333333333333,
+      "gold_in_context_rate": 0.8333333333333334,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 1.0
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 1.0,
+        "ru": 1.0
+      },
+      "latency_p50_s": 1.9886470000001282,
+      "latency_p95_s": 38.63991691989942,
+      "latency_mean_s": 7.1685708966489985,
+      "tokens_per_s": 150.91336207998782,
+      "mean_prompt_tokens": 2399.45,
+      "mean_eval_tokens": 40.85,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "agent",
+      "n": 20,
+      "accuracy": 0.55,
+      "answerable_accuracy": 0.55,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.25,
+      "stale_rate": null,
+      "citation_hit_rate": 0.16666666666666666,
+      "gold_in_context_rate": 0.75,
+      "by_category": {
+        "multi-hop": 0.6666666666666666,
+        "single-hop": 0.5294117647058824
+      },
+      "by_lang": {
+        "en": 0.6666666666666666,
+        "kk": 0.25,
+        "ru": 0.5
+      },
+      "latency_p50_s": 1.7462286849986413,
+      "latency_p95_s": 16.624236317050965,
+      "latency_mean_s": 3.181589385999905,
+      "tokens_per_s": 86.69469786131697,
+      "mean_prompt_tokens": 1274.55,
+      "mean_eval_tokens": 51.45,
+      "error_rate": 0.0,
+      "agent": {
+        "tool_calls_per_question": 0.95,
+        "invalid_call_rate": 0.05263157894736842,
+        "searched_rate": 0.8,
+        "fetched_rate": 0.1,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 1.95
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "closed",
+      "n": 20,
+      "accuracy": 0.4,
+      "answerable_accuracy": 0.4,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.3,
+      "stale_rate": null,
+      "citation_hit_rate": null,
+      "gold_in_context_rate": null,
+      "by_category": {
+        "multi-hop": 0.3333333333333333,
+        "single-hop": 0.4117647058823529
+      },
+      "by_lang": {
+        "en": 0.4166666666666667,
+        "kk": 0.25,
+        "ru": 0.5
+      },
+      "latency_p50_s": 0.291577549500289,
+      "latency_p95_s": 1.8765770274992974,
+      "latency_mean_s": 0.49910921720002077,
+      "tokens_per_s": 85.67324691314117,
+      "mean_prompt_tokens": 75.6,
+      "mean_eval_tokens": 25.95,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "rag",
+      "n": 20,
+      "accuracy": 0.85,
+      "answerable_accuracy": 0.85,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.1,
+      "stale_rate": null,
+      "citation_hit_rate": 0.75,
+      "gold_in_context_rate": 0.8333333333333334,
+      "by_category": {
+        "multi-hop": 0.6666666666666666,
+        "single-hop": 0.8823529411764706
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 0.75,
+        "ru": 0.5
+      },
+      "latency_p50_s": 3.0263509944998077,
+      "latency_p95_s": 36.93377835415104,
+      "latency_mean_s": 6.515471700349917,
+      "tokens_per_s": 80.28365673636448,
+      "mean_prompt_tokens": 2399.45,
+      "mean_eval_tokens": 38.85,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "agent",
+      "n": 20,
+      "accuracy": 0.85,
+      "answerable_accuracy": 0.85,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.0,
+      "stale_rate": null,
+      "citation_hit_rate": 0.4166666666666667,
+      "gold_in_context_rate": 0.9166666666666666,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 0.8235294117647058
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 0.5,
+        "ru": 0.75
+      },
+      "latency_p50_s": 3.594612924502144,
+      "latency_p95_s": 26.839238246450076,
+      "latency_mean_s": 8.381374967250668,
+      "tokens_per_s": 70.01187965080885,
+      "mean_prompt_tokens": 3832.95,
+      "mean_eval_tokens": 384.3,
+      "error_rate": 0.0,
+      "agent": {
+        "tool_calls_per_question": 1.85,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 0.75,
+        "fetched_rate": 0.15,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.35,
+        "mean_steps": 2.5
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "closed",
+      "n": 20,
+      "accuracy": 0.85,
+      "answerable_accuracy": 0.85,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.0,
+      "stale_rate": null,
+      "citation_hit_rate": null,
+      "gold_in_context_rate": null,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 0.8235294117647058
+      },
+      "by_lang": {
+        "en": 0.9166666666666666,
+        "kk": 0.5,
+        "ru": 1.0
+      },
+      "latency_p50_s": 0.5182850374985719,
+      "latency_p95_s": 1.6106710168496658,
+      "latency_mean_s": 0.8107776146996912,
+      "tokens_per_s": 72.12490135123917,
+      "mean_prompt_tokens": 79.45,
+      "mean_eval_tokens": 37.05,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "rag",
+      "n": 20,
+      "accuracy": 1.0,
+      "answerable_accuracy": 1.0,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.0,
+      "stale_rate": null,
+      "citation_hit_rate": 0.5833333333333334,
+      "gold_in_context_rate": 0.8333333333333334,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 1.0
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 1.0,
+        "ru": 1.0
+      },
+      "latency_p50_s": 2.457383283499439,
+      "latency_p95_s": 38.38098000530026,
+      "latency_mean_s": 6.839921899549518,
+      "tokens_per_s": 70.64891991061577,
+      "mean_prompt_tokens": 2168.2,
+      "mean_eval_tokens": 59.1,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen3.5:latest",
+      "mode": "agent",
+      "n": 20,
+      "accuracy": 1.0,
+      "answerable_accuracy": 1.0,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.0,
+      "stale_rate": null,
+      "citation_hit_rate": 0.08333333333333333,
+      "gold_in_context_rate": 0.4166666666666667,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 1.0
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 1.0,
+        "ru": 1.0
+      },
+      "latency_p50_s": 5.464180422499339,
+      "latency_p95_s": 11.680979452349675,
+      "latency_mean_s": 5.596230323699456,
+      "tokens_per_s": 12.228509272160903,
+      "mean_prompt_tokens": 1174.3,
+      "mean_eval_tokens": 55.05,
+      "error_rate": 0.0,
+      "agent": {
+        "tool_calls_per_question": 0.5,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 0.45,
+        "fetched_rate": 0.0,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 1.5
+      }
+    },
+    {
+      "model": "qwen3.5:latest",
+      "mode": "closed",
+      "n": 20,
+      "accuracy": 1.0,
+      "answerable_accuracy": 1.0,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.0,
+      "stale_rate": null,
+      "citation_hit_rate": null,
+      "gold_in_context_rate": null,
+      "by_category": {
+        "multi-hop": 1.0,
+        "single-hop": 1.0
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 1.0,
+        "ru": 1.0
+      },
+      "latency_p50_s": 2.1589563289999205,
+      "latency_p95_s": 6.132697119298976,
+      "latency_mean_s": 2.7393883016502514,
+      "tokens_per_s": 12.503310105188968,
+      "mean_prompt_tokens": 79.45,
+      "mean_eval_tokens": 27.0,
+      "error_rate": 0.0
+    },
+    {
+      "model": "qwen3.5:latest",
+      "mode": "rag",
+      "n": 20,
+      "accuracy": 0.95,
+      "answerable_accuracy": 0.95,
+      "unanswerable_accuracy": null,
+      "false_abstention_rate": 0.05,
+      "stale_rate": null,
+      "citation_hit_rate": 0.6666666666666666,
+      "gold_in_context_rate": 0.8333333333333334,
+      "by_category": {
+        "multi-hop": 0.6666666666666666,
+        "single-hop": 1.0
+      },
+      "by_lang": {
+        "en": 1.0,
+        "kk": 1.0,
+        "ru": 0.75
+      },
+      "latency_p50_s": 6.7758056545008,
+      "latency_p95_s": 39.27299879424773,
+      "latency_mean_s": 10.309365462499954,
+      "tokens_per_s": 12.199129052298916,
+      "mean_prompt_tokens": 2168.2,
+      "mean_eval_tokens": 35.55,
+      "error_rate": 0.0
+    }
+  ]
+}

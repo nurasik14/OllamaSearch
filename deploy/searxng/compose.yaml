@@ -1,0 +1,21 @@
+# Local SearXNG for ollamasearch. Works with `podman compose` and `docker compose`.
+#
+#   export SEARXNG_SECRET="$(openssl rand -hex 32)"   # or put it in deploy/searxng/.env
+#   podman compose up -d                               # from this directory
+#   curl 'http://127.0.0.1:8080/search?q=test&format=json'
+services:
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    container_name: ollamasearch-searxng
+    ports:
+      - "127.0.0.1:8080:8080"   # only reachable from this machine
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET:?set SEARXNG_SECRET first, see the comment at the top}
+      SEARXNG_BASE_URL: http://127.0.0.1:8080/
+    volumes:
+      - ./settings.yml:/etc/searxng/settings.yml:ro,Z   # Z: SELinux relabel (Fedora)
+      - searxng-cache:/var/cache/searxng:Z
+    restart: unless-stopped
+
+volumes:
+  searxng-cache:
