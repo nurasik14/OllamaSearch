@@ -10,7 +10,8 @@
   "modes": [
     "closed",
     "rag",
-    "agent"
+    "agent",
+    "multi"
   ],
   "repeats": 1,
   "limit": null,
