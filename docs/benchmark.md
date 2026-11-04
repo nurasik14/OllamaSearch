@@ -1,12 +1,13 @@
 # SearchBench
 
-SearchBench measures **how well a local model uses web search**, not how much it already knows. It runs the same questions through three pipelines and scores the answers automatically:
+SearchBench measures **how well a local model uses web search**, not how much it already knows. It runs the same questions through four pipelines and scores the answers automatically:
 
 | Mode | What the model gets |
 |---|---|
 | `closed` | The question only (baseline: memory and hallucination). |
 | `rag` | Top-5 search results, fetched concurrently, cut down to BM25-ranked passages (≤ 6,000 chars, ≤ 1,500 per source), then one answer call. |
 | `agent` | Native tool calling with `web_search(query)` and `web_fetch(url)`, up to 4 steps, then a forced final answer. |
+| `multi` | A team of single-purpose calls on the same model: planner → searcher + reader per sub-question → re-planner (second hops) → synthesizer → verifier. JSON outputs are schema-constrained, and no tool calls are needed. See [multi-agent.md](multi-agent.md). |
 
 ## Tracks
 
@@ -50,6 +51,7 @@ Two infrastructure failures are recorded instead of being scored as model behavi
 - **Stale rate** (conflicting): the answer gives the outdated value and not the current one.
 - **False abstention rate**: the model said "not found" on an answerable question.
 - **Agent tool metrics**: calls per question, invalid-call rate (unknown tool or bad arguments), searched-at-all rate, fetched-a-page rate, tool calls printed as JSON text instead of native calls, step-limit rate, mean steps.
+- **Multi-agent trace** (`multi` only): LLM calls, searches and sub-questions per question, how often the verifier rejected a draft and how often a follow-up round ran. The agent tool metrics are not computed for `multi`.
 - **Latency**: p50/p95 of wall-clock seconds per question (search + fetch + generation). **Throughput**: generated tokens / generation time, from Ollama's `eval_count` and `eval_duration`.
 
 ## Reproducing
@@ -61,7 +63,7 @@ uv run ollamasearch doctor
 # offline track, all local models, all modes (resumable: re-run with the same --out)
 uv run ollamasearch bench --track offline \
   --models qwen3.5:2b,qwen2.5:1.5b,qwen2.5:3b,llama3.2:3b,qwen3.5:latest \
-  --modes closed,rag,agent --out bench/results/offline-full
+  --modes closed,rag,agent,multi --out bench/results/offline-full
 
 # live track (needs SearXNG)
 uv run ollamasearch bench --track live --models qwen3.5:2b,llama3.2:3b --out bench/results/live
@@ -72,6 +74,10 @@ uv run python bench/plot.py bench/results/offline-full/summary.json --out docs/i
 ```
 
 Fixed for reproducibility: temperature 0, seed 42, `think=False`, `num_ctx=8192`, dataset SHA-256 recorded in `meta.json`. Models are unloaded (`keep_alive=0`) between models so a 6 GB GPU never holds two at once. Useful flags: `--limit N`, `--categories multi-hop,conflicting`, `--repeats 3`, `--think` (thinking models), `--num-ctx`.
+
+## Results
+
+The committed run is [`bench/results/offline-full/`](../bench/results/offline-full/report.md) (5 models × 4 modes, 840 rows) and [`bench/results/live/`](../bench/results/live/report.md) (closed/rag/agent). The README's [SearchBench results](../README.md#searchbench-results) section summarises both. The same pipelines on published datasets are in [external-benchmarks.md](external-benchmarks.md#results).
 
 ## Limitations
 

@@ -13,10 +13,15 @@ import json
 from pathlib import Path
 from typing import Any
 
-# Categorical slots 1-3 of a CVD-validated palette, assigned to modes in a fixed order
+# Categorical slots 1-4 of a CVD-validated palette, assigned to modes in a fixed order
 # so a mode keeps its colour across every chart, whatever subset of modes was run.
-MODE_COLORS = {"closed": "#2a78d6", "rag": "#eb6834", "agent": "#1baf7a"}
-MODE_LABELS = {"closed": "closed-book", "rag": "RAG", "agent": "agent (tools)"}
+MODE_COLORS = {"closed": "#2a78d6", "rag": "#eb6834", "agent": "#1baf7a", "multi": "#8b5cc8"}
+MODE_LABELS = {
+    "closed": "closed-book",
+    "rag": "RAG",
+    "agent": "agent (tools)",
+    "multi": "multi-agent",
+}
 SURFACE = "#fcfcfb"
 INK = "#0b0b0b"
 INK_2 = "#52514e"
@@ -39,7 +44,7 @@ def _grouped_bars(
     value = {(g["model"], g["mode"]): g.get(metric) for g in groups}
 
     width = min(0.8 / max(len(modes), 1), 0.22)
-    fig, ax = plt.subplots(figsize=(max(6.0, 1.9 * len(models) + 2), 4.2), dpi=150)
+    fig, ax = plt.subplots(figsize=(max(6.0, 0.55 * len(modes) * len(models) + 2.6), 4.2), dpi=150)
     fig.patch.set_facecolor(SURFACE)
     ax.set_facecolor(SURFACE)
     for i, mode in enumerate(modes):

@@ -101,14 +101,34 @@ Streaming: drafts are never streamed, because the verifier may replace them. Wit
 - **SearchBench** (`--modes multi`): alias match for correctness; the exact `NOT_FOUND` sentence (shared with `prompts.py`) for abstention on unanswerable questions; *citation hit* from `cited_urls`; *gold in context* from `context_urls` (any role, any round); the stale rate on conflicting questions; latency and tokens from `timings` and `tokens`. The agent-only tool metrics in `summarize_rows` are not computed for `multi`. Use `steps` (LLM calls) and `tool_calls` in `runs.jsonl` instead.
 - **External benchmarks** (`--suite <task> --modes multi`) run the same pipeline over the task's documents.
 
-Smoke results (offline track, qwen3.5:2b, temperature 0; small samples, so treat these as sanity checks, not benchmark numbers):
+Results on the full offline track (42 questions, temperature 0, seed 42; report:
+[`bench/results/offline-full/report.md`](../bench/results/offline-full/report.md)):
 
-| Run | n | Accuracy | Citation hit | LLM calls / question | p50 latency |
-|---|---|---|---|---|---|
-| `--limit 8` (single-hop, multi-hop, conflicting, multilingual, unanswerable) | 8 | 8/8 | 100% | 4.1 (4 × 7, 5 × 1) | 3.5 s |
-| `--categories unanswerable,conflicting --limit 5` | 5 | 5/5 | 100% | 4.4 | 5.5 s |
+| Model | `multi` | `rag` | `agent` | LLM calls / q | Sub-questions / q | Verifier rejected | Prompt tokens / q (multi vs rag) | p50 latency (multi vs rag) |
+|---|---|---|---|---|---|---|---|---|
+| `qwen2.5:1.5b` | 57% | 86% | 12% | 6.5 | 2.5 | 2% | 5,493 vs 1,416 | 11.2 s vs 0.6 s |
+| `qwen3.5:2b` | 95% | 100% | 79% | 4.0 | 1.0 | 5% | 3,140 vs 1,396 | 4.0 s vs 1.0 s |
+| `qwen2.5:3b` | 88% | 98% | 60% | 4.0 | 1.0 | 2% | 3,026 vs 1,416 | 4.7 s vs 1.2 s |
+| `llama3.2:3b` | 71% | 98% | 45% | 6.0 | 2.3 | 10% | 4,648 vs 1,372 | 9.5 s vs 1.0 s |
+| `qwen3.5:latest` | 100% | 100% | 90% | 4.8 | 1.4 | 5% | 3,620 vs 1,396 | 22.4 s vs 4.5 s |
 
-For comparison, `rag` with the same model is 100% on the full offline track (42 questions) at 1.0 s p50 and 1,396 mean prompt tokens. `multi` costs about 3.5× RAG's latency and about 2.3× its prompt tokens (3,273 per question in the 8-item run). On this corpus it matches RAG. It is built for the cases RAG can't handle: second hops that BM25 on the question doesn't retrieve, conflicting pages, and wrong readings that a check against the sources catches.
+On the published benchmarks (4 small models; see [external-benchmarks.md](external-benchmarks.md#results)) `multi`
+is 1–14 points behind `rag` on RGB noise (81–95% vs 93–97%), behind it on HotpotQA and RGB negative, and ahead in
+two cells: `qwen2.5:3b` on KazQAD (40% vs 35%) and `qwen3.5:2b` on live SimpleQA (67% vs 57%).
+
+What this says about the design:
+
+- **It does what it was built for with weak tool users.** `multi` beats `agent` for every model on SearchBench
+  (by 10–45 points), because no role has to emit a tool call. `qwen2.5:1.5b` goes from 12% to 57%.
+- **It does not beat one-shot RAG on small corpora.** BM25 on the question already retrieves the gold pages there, so
+  the extra roles add only chances to misread. `qwen2.5:1.5b` and `llama3.2:3b` decompose too eagerly (2.3–2.5
+  sub-questions per question against 1.0 for the Qwen 2B/3B models), which costs calls and accuracy.
+- **The live web is where it can win.** The only clear win over RAG is SimpleQA on the open web, where the extra
+  searches find pages that the single query missed.
+- **Cost**: 4–6.5 LLM calls and 2.1–3.9× RAG's prompt tokens per question, and 4–19× its median latency.
+
+The first full run had 9 `qwen3.5:2b` rows that failed with "Failed to connect to Ollama" while the Ollama server was down. They
+were deleted and re-run (the backup is ignored by git); before that the row read 79%.
 
 ## Limitations
 

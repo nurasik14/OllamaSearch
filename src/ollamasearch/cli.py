@@ -141,7 +141,7 @@ def _make_llm(settings: Settings, client: ChatClient) -> LLM:
     )
 
 
-ModeOpt = Annotated[str, typer.Option("--mode", "-m", help="rag | agent | closed")]
+ModeOpt = Annotated[str, typer.Option("--mode", "-m", help="rag | agent | multi | closed")]
 ModelOpt = Annotated[str | None, typer.Option("--model", help="Ollama model (default from env)")]
 BackendOpt = Annotated[
     str | None, typer.Option("--backend", "-b", help="searxng | ollama | corpus")

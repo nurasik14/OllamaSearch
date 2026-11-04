@@ -67,6 +67,35 @@ The full five categories at `--sample 0` are 1,240 short calls per model.
 - **Dotted names.** BFCL's `.` → `_` rule is kept. When a model calls the *dotted* name it read in the user message (e.g. "use the function 'employee.fetch_data'"), Ollama discards the call because no tool has that name, and the reply comes back empty. These rows are flagged `empty_reply` (the *Empty replies* column) and score `ast_decoder:decoder_failed`. BFCL would score the same item as `wrong_func_name`, so accuracy is unaffected.
 - **Temperature.** We use 0; BFCL uses 0.001.
 
+## Results
+
+Run on 2026-11-03: 50 items per category (250 per model), seed 42, temperature 0, `think=False`, Ollama 0.18.1,
+RTX 4050 6 GB. Report: [`bench/results/bfcl/report.md`](../bench/results/bfcl/report.md).
+
+| Model | Overall | AST (non-live) | simple | multiple | parallel | parallel_multiple | irrelevance | Text calls | No call |
+|---|---|---|---|---|---|---|---|---|---|
+| `qwen2.5:1.5b` | 62% | 60% | 68% | 78% | 42% | 50% | 70% | 1% | 20% |
+| `qwen3.5:2b` | 67% | 66% | 66% | 82% | 50% | 66% | 72% | 0% | 33% |
+| `qwen2.5:3b` | 77% | 82% | 90% | 90% | 74% | 72% | 60% | 0% | 13% |
+| `llama3.2:3b` | 14% | 18% | 16% | 30% | 16% | 10% | 0% | 4% | 1% |
+| `qwen3.5:latest` | **89%** | **90%** | 96% | 90% | 86% | 86% | 86% | 0% | 18% |
+
+`Native only` equals `Overall` for every model: text-printed calls never turned a failure into a pass.
+
+- **`qwen2.5:3b` is the best small function caller** (82% AST), ahead of `qwen3.5:2b` (66%), which is the stronger
+  search model overall. `qwen3.5:2b` often answers in prose instead of calling on `parallel` items (22 of
+  50 with no call).
+- **`llama3.2:3b` fails on types, not on picking the function.** Of its 214 failures, 67 are `type_error:simple` on
+  `simple`/`multiple` (numbers sent as strings such as `"5"`, or wrapped as `{"type": "integer", "value": 60}`), 86 are
+  parallel matching failures, and all 50 irrelevance items got a call anyway. It does emit native calls (47–49 of 50
+  per category), so the harness isn't dropping them. BFCL's checker is strict about Python types, which is the protocol.
+- **`qwen2.5:1.5b` can call functions** (62% overall, 43–49 native calls per AST category). Its 0% tool use in
+  ollamasearch's agent mode comes from the agent system prompt, not from missing tool support (see
+  [external-benchmarks.md](external-benchmarks.md#results)).
+- 50 items per category gives about ±7 points of standard error per category and ±3 points on the overall mean, so
+  the ranking `qwen3.5:latest` > `qwen2.5:3b` > {`qwen3.5:2b`, `qwen2.5:1.5b`} > `llama3.2:3b` is solid but the middle
+  pair is a tie.
+
 ## Limitations
 
 - A small sample (50 per category) has a ±7 pp standard error around 50% accuracy. Compare models within a run and use `--sample 0` for publishable numbers.

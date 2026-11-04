@@ -79,6 +79,61 @@ The report credits the dataset (authors, license, URL) and has an overall table 
 - **Metrics** (all official): `is_correct`, `is_incorrect`, `is_not_attempted`, `is_given_attempted`, `accuracy_given_attempted`, F-score (harmonic mean of correct and correct-given-attempted). When a judge was used, the string grader's correct rate is reported alongside for comparison.
 - **Differences from the official protocol**: officially the model answers from memory and a GPT-4-class model grades. A small local judge is much weaker: in our smoke run, `qwen3.5:2b` graded a clear "there is no record of…" answer as INCORRECT instead of NOT_ATTEMPTED. The string grader misses paraphrases, units and numbers written differently, so it under-counts CORRECT. Sampling uses our seeded permutation, not simple-evals' `random.Random(0).sample`. The live web changes, and several SimpleQA answers are on Wikipedia pages that SearXNG may or may not surface, so compare models within one run only.
 
+## Results
+
+Run on 2026-11-03/04 with resumable commands like the ones above: `qwen2.5:1.5b`, `qwen3.5:2b`,
+`qwen2.5:3b` and `llama3.2:3b`, temperature 0, seed 42, `think=False`, `num_ctx` 8192, Ollama 0.18.1, string grader
+(no `--judge-model`), RTX 4050 6 GB. Samples: HotpotQA, KazQAD and SimpleQA 60 questions; RGB 40 questions (× 3 noise
+rates for `rgb-noise`). Every number below comes from the committed `bench/results/<task>/report.md`.
+
+Accuracy (%), `closed / rag / agent / multi` (RGB has no closed-book run; for `rgb-negative` accuracy is the
+rejection rate, for `rgb-counterfactual` it is detected-and-corrected):
+
+| Model | HotpotQA | KazQAD | RGB noise | RGB negative | RGB counterfactual | SimpleQA |
+|---|---|---|---|---|---|---|
+| `qwen2.5:1.5b` | 15 / 67 / 8 / 48 | 0 / 33 / 0 / 8 | – / 93 / 2 / 81 | – / 15 / 90 / 10 | – / 0 / 0 / 0 | 0 / 58 / 0 / 55 |
+| `qwen3.5:2b` | 27 / 77 / 68 / 68 | 8 / 60 / 27 / 50 | – / 97 / 86 / 95 | – / 55 / 52 / 42 | – / 0 / 0 / 0 | 7 / 57 / 58 / 67 |
+| `qwen2.5:3b` | 2 / 50 / 32 / 42 | 2 / 35 / 18 / 40 | – / 96 / 75 / 95 | – / 68 / 60 / 48 | – / 0 / 0 / 0 | 0 / 60 / 22 / 60 |
+| `llama3.2:3b` | 8 / 62 / 48 / 42 | 5 / 52 / 8 / 30 | – / 97 / 81 / 83 | – / 75 / 45 / 57 | – / 0 / 0 / 0 | 0 / 57 / 42 / 40 |
+
+Median latency per question: `rag` 0.4–1.5 s on the document tasks and 2.1–4.1 s on live SimpleQA; `agent` 0.1–4.0 s on documents
+and up to 13.6 s on SimpleQA (the 1.5B model's 0.1 s is because it never searches); `multi` 3.6–12.9 s on documents and 8.6–27.3 s on SimpleQA.
+
+Task metrics worth reading next to accuracy:
+
+- **HotpotQA**: EM is 0–8% and F1 1–16% across all rows, as expected for full-sentence answers (see the protocol
+  note). Gold paragraph recall is 91–98% for every rag and multi row (both gold paragraphs 82–95%), so a RAG accuracy
+  of 50–77% is mostly a reading failure, not a retrieval failure. In agent mode recall depends on whether the model
+  searches at all: 0% for `qwen2.5:1.5b`, 60% for `qwen2.5:3b`, 87–92% for the others.
+- **KazQAD**: the gold passage reached the model in 98% of `llama3.2:3b` RAG and multi runs, yet RAG accuracy is 52%:
+  reading Kazakh is the bottleneck. Stem match (lenient for agglutinative suffixes) is 55% for that row.
+- **RGB noise**: RAG loses at most 15 points from noise 0 to 0.8 (the worst is `qwen2.5:1.5b`, 100 → 85); agent mode
+  loses 20–46 points for the three models that use tools (`llama3.2:3b` 98 → 52).
+- **RGB negative**: RGB's exact phrase `insufficient information` never appears (our prompt doesn't ask for it). The
+  gold answer leaked into 0–12% of answers even though no passage contained it, so the models sometimes answer from
+  memory instead of rejecting.
+- **RGB counterfactual**: error detection 0–8% (3 of 480 answers), error correction 0%. Answers repeat the planted
+  fake answer in 60–98% of rows for every model and mode, except `qwen2.5:1.5b` agent (0%), which refuses instead. RGB's
+  prompt warns the model about factual errors and ours doesn't, so these are spontaneous-detection numbers.
+- **SimpleQA**: closed-book, `qwen2.5:1.5b`, `qwen2.5:3b` and `llama3.2:3b` mostly decline (70–100% not attempted),
+  while `qwen3.5:2b` answers everything and gets 93% wrong. With rag or multi, correct-given-attempted is 56–73% and the
+  F-score 49–67%.
+
+Two run notes:
+
+- **`qwen2.5:1.5b` never calls a tool** in agent mode (0 calls in all 380 agent runs here). A direct probe of Ollama
+  outside this code reproduces it: with the agent system prompt it answers the not-found sentence at once, and without
+  it it describes a search in prose. Its agent rows measure that, not search skill.
+- **Empty SearXNG results on SimpleQA.** `RecordingSearch` stores only non-empty results, so a query that came back
+  empty for the first model was searched again for later models. 16 `qwen2.5:1.5b` rows (14 rag, 2 multi) had scored
+  `search: no results` while later models got results for the same queries. Those rows were deleted and re-run against
+  the recorded results (rag 47% → 58%, multi 53% → 55%; error rate 23% → 0%). A resumed run still treats such rows as
+  finished, so check the report's error column after a live run.
+- **One KazQAD question has no BM25 hits.** Search over its 7 passages returns nothing, so every model's rag and multi
+  row for it ends in `search: no results` (the 2% error rate in those rows). It affects all models
+  equally. Two agent rows (`qwen3.5:2b` on HotpotQA and RGB noise) are Ollama 500 errors from a malformed tool call in
+  the model's output, and count as failures.
+
 ## Limitations
 
 - **Not leaderboard numbers.** Every task is run through our retrieval pipelines and prompts, so scores measure "local model + ollamasearch" on that data, not the model alone under the official protocol. Use them to compare models and modes against each other.
