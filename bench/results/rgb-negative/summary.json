@@ -1,0 +1,386 @@
+{
+  "meta": {
+    "suite": "rgb-negative",
+    "title": "RGB negative rejection (en)",
+    "source_url": "https://github.com/chen700564/RGB",
+    "license": "CC BY-NC-SA 4.0",
+    "citation": "Chen et al., AAAI 2024",
+    "live": false,
+    "models": [
+      "qwen2.5:1.5b",
+      "qwen3.5:2b",
+      "qwen2.5:3b",
+      "llama3.2:3b"
+    ],
+    "modes": [
+      "rag",
+      "agent",
+      "multi"
+    ],
+    "repeats": 1,
+    "sample": 40,
+    "default_sample": 100,
+    "n_items": 40,
+    "seed": 42,
+    "data_dir": "~/.cache/ollamasearch/datasets",
+    "dataset_files": [
+      {
+        "url": "https://raw.githubusercontent.com/chen700564/RGB/master/data/en_refine.json",
+        "path": "~/.cache/ollamasearch/datasets/rgb/en_refine.json",
+        "bytes": 7229738,
+        "sha256": "1be6ec4b85364b5590c7683ed4df8d47535ae21bc021bbcd3f44a71579f64bcb",
+        "matches_pinned_sha256": true
+      }
+    ],
+    "grader": "string",
+    "judge_model": null,
+    "ollamasearch_version": "0.2.0",
+    "ollama_server_version": "0.18.1",
+    "python": "3.14.8",
+    "started_at": "2026-11-03T17:20:32+00:00",
+    "settings": {
+      "ollama_host": null,
+      "model": "qwen3.5:2b",
+      "searxng_url": "http://127.0.0.1:8080",
+      "backend": "searxng",
+      "top_k": 5,
+      "search_timeout": 15.0,
+      "connect_timeout": 5.0,
+      "read_timeout": 15.0,
+      "max_page_bytes": 3000000,
+      "fetch_concurrency": 8,
+      "per_host_concurrency": 2,
+      "use_truststore": true,
+      "cache_dir": "~/.cache/ollamasearch",
+      "source_char_budget": 1500,
+      "context_char_budget": 6000,
+      "passage_chars": 500,
+      "think": false,
+      "temperature": 0.0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "max_tokens": 1024,
+      "agent_max_steps": 4,
+      "multi_verify": true,
+      "llm_timeout": 600.0
+    }
+  },
+  "groups": [
+    {
+      "model": "llama3.2:3b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.45,
+      "by_category": {
+        "negative": 0.45
+      },
+      "latency_p50_s": 0.906885983499933,
+      "latency_p95_s": 1.6637068125001395,
+      "latency_mean_s": 1.0958203729750153,
+      "tokens_per_s": 81.12251312379233,
+      "mean_prompt_tokens": 1002.5,
+      "mean_eval_tokens": 57.45,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.45,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.125
+      },
+      "agent": {
+        "tool_calls_per_question": 1.0,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 1.0,
+        "fetched_rate": 0.0,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 2.0
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.575,
+      "by_category": {
+        "negative": 0.575
+      },
+      "latency_p50_s": 10.16757605350017,
+      "latency_p95_s": 12.226579859500225,
+      "latency_mean_s": 9.123112395775047,
+      "tokens_per_s": 80.70291671402713,
+      "mean_prompt_tokens": 4096.775,
+      "mean_eval_tokens": 297.65,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.575,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.1
+      },
+      "multi": {
+        "llm_calls_per_question": 6.05,
+        "searches_per_question": 3.675,
+        "sub_questions_per_question": 2.525,
+        "verifier_rejection_rate": 0.275,
+        "follow_up_rate": 0.025
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.75,
+      "by_category": {
+        "negative": 0.75
+      },
+      "latency_p50_s": 0.6220416749999913,
+      "latency_p95_s": 1.3366198462501173,
+      "latency_mean_s": 0.7159241168499989,
+      "tokens_per_s": 79.78465456739798,
+      "mean_prompt_tokens": 1099.125,
+      "mean_eval_tokens": 22.1,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.75,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.05
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.9,
+      "by_category": {
+        "negative": 0.9
+      },
+      "latency_p50_s": 0.1378720700000713,
+      "latency_p95_s": 0.19563647894992728,
+      "latency_mean_s": 0.1590860594500043,
+      "tokens_per_s": 167.03902060032374,
+      "mean_prompt_tokens": 407.9,
+      "mean_eval_tokens": 10.575,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.9,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.025
+      },
+      "agent": {
+        "tool_calls_per_question": 0.0,
+        "invalid_call_rate": null,
+        "searched_rate": 0.0,
+        "fetched_rate": 0.0,
+        "text_tool_call_rate": null,
+        "step_limit_rate": 0.0,
+        "mean_steps": 1.0
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.1,
+      "by_category": {
+        "negative": 0.1
+      },
+      "latency_p50_s": 7.930620769999905,
+      "latency_p95_s": 10.453307215999951,
+      "latency_mean_s": 7.753282067999976,
+      "tokens_per_s": 154.68862646370874,
+      "mean_prompt_tokens": 4225.575,
+      "mean_eval_tokens": 342.6,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.1,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.025
+      },
+      "multi": {
+        "llm_calls_per_question": 5.925,
+        "searches_per_question": 3.225,
+        "sub_questions_per_question": 2.2,
+        "verifier_rejection_rate": 0.0,
+        "follow_up_rate": 0.0
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.15,
+      "by_category": {
+        "negative": 0.15
+      },
+      "latency_p50_s": 0.4892280535000282,
+      "latency_p95_s": 1.012095080599988,
+      "latency_mean_s": 0.5788867004499878,
+      "tokens_per_s": 148.12671197154825,
+      "mean_prompt_tokens": 1120.625,
+      "mean_eval_tokens": 40.35,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.15,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.025
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.6,
+      "by_category": {
+        "negative": 0.6
+      },
+      "latency_p50_s": 1.2891250870000022,
+      "latency_p95_s": 2.9326145856500485,
+      "latency_mean_s": 1.3340935679000268,
+      "tokens_per_s": 82.46922612720013,
+      "mean_prompt_tokens": 1601.775,
+      "mean_eval_tokens": 74.7,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.6,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.0
+      },
+      "agent": {
+        "tool_calls_per_question": 1.4,
+        "invalid_call_rate": 0.017857142857142856,
+        "searched_rate": 0.9,
+        "fetched_rate": 0.45,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 2.4
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.475,
+      "by_category": {
+        "negative": 0.475
+      },
+      "latency_p50_s": 4.316573356000163,
+      "latency_p95_s": 6.444551906699929,
+      "latency_mean_s": 4.795731311625024,
+      "tokens_per_s": 84.2498118318659,
+      "mean_prompt_tokens": 2353.6,
+      "mean_eval_tokens": 150.5,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.475,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.0
+      },
+      "multi": {
+        "llm_calls_per_question": 4.075,
+        "searches_per_question": 2.05,
+        "sub_questions_per_question": 1.0,
+        "verifier_rejection_rate": 0.125,
+        "follow_up_rate": 0.05
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.675,
+      "by_category": {
+        "negative": 0.675
+      },
+      "latency_p50_s": 0.7710569169998962,
+      "latency_p95_s": 1.5891506496499,
+      "latency_mean_s": 0.9332201219250009,
+      "tokens_per_s": 81.70075423403348,
+      "mean_prompt_tokens": 1120.625,
+      "mean_eval_tokens": 36.875,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.675,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.0
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.525,
+      "by_category": {
+        "negative": 0.525
+      },
+      "latency_p50_s": 3.8319189105000078,
+      "latency_p95_s": 8.891635667699719,
+      "latency_mean_s": 4.614364593899961,
+      "tokens_per_s": 70.01155637158014,
+      "mean_prompt_tokens": 4468.725,
+      "mean_eval_tokens": 227.0,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.525,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.025
+      },
+      "agent": {
+        "tool_calls_per_question": 3.1,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 0.975,
+        "fetched_rate": 0.775,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.525,
+        "mean_steps": 3.575
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.425,
+      "by_category": {
+        "negative": 0.425
+      },
+      "latency_p50_s": 3.9576293949999126,
+      "latency_p95_s": 12.249227226450056,
+      "latency_mean_s": 5.562508217999993,
+      "tokens_per_s": 70.00556811763566,
+      "mean_prompt_tokens": 3093.275,
+      "mean_eval_tokens": 275.825,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.425,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.05
+      },
+      "multi": {
+        "llm_calls_per_question": 4.65,
+        "searches_per_question": 2.25,
+        "sub_questions_per_question": 1.05,
+        "verifier_rejection_rate": 0.3,
+        "follow_up_rate": 0.125
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.55,
+      "by_category": {
+        "negative": 0.55
+      },
+      "latency_p50_s": 1.4495012899999438,
+      "latency_p95_s": 3.3010222209499362,
+      "latency_mean_s": 1.5710471604499845,
+      "tokens_per_s": 70.29533824647817,
+      "mean_prompt_tokens": 1146.3,
+      "mean_eval_tokens": 74.975,
+      "error_rate": 0.0,
+      "metrics": {
+        "rejection_rate": 0.55,
+        "exact_phrase_rate": 0.0,
+        "answered_anyway": 0.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,567 @@
+{
+  "meta": {
+    "suite": "kazqad",
+    "title": "KazQAD reading comprehension (kk, test)",
+    "source_url": "https://github.com/IS2AI/KazQAD",
+    "license": "CC BY-SA 4.0",
+    "citation": "Yeshpanov et al., LREC-COLING 2024",
+    "live": false,
+    "models": [
+      "qwen2.5:1.5b",
+      "qwen3.5:2b",
+      "qwen2.5:3b",
+      "llama3.2:3b"
+    ],
+    "modes": [
+      "closed",
+      "rag",
+      "agent",
+      "multi"
+    ],
+    "repeats": 1,
+    "sample": 60,
+    "default_sample": 100,
+    "n_items": 60,
+    "seed": 42,
+    "data_dir": "~/.cache/ollamasearch/datasets",
+    "dataset_files": [
+      {
+        "url": "https://raw.githubusercontent.com/IS2AI/KazQAD/main/data/reading-comprehension/kazqad-reading-comprehension-v1.0-kk-test.jsonl",
+        "path": "~/.cache/ollamasearch/datasets/kazqad/kazqad-reading-comprehension-v1.0-kk-test.jsonl",
+        "bytes": 13213212,
+        "sha256": "9bcf199095c745b14a8e4af704d488313720e51c7d476ebc9f4d97441fa29d36",
+        "matches_pinned_sha256": true
+      }
+    ],
+    "grader": "string",
+    "judge_model": null,
+    "ollamasearch_version": "0.2.0",
+    "ollama_server_version": "0.18.1",
+    "python": "3.14.8",
+    "started_at": "2026-11-03T11:32:52+00:00",
+    "settings": {
+      "ollama_host": null,
+      "model": "qwen3.5:2b",
+      "searxng_url": "http://127.0.0.1:8080",
+      "backend": "searxng",
+      "top_k": 5,
+      "search_timeout": 15.0,
+      "connect_timeout": 5.0,
+      "read_timeout": 15.0,
+      "max_page_bytes": 3000000,
+      "fetch_concurrency": 8,
+      "per_host_concurrency": 2,
+      "use_truststore": true,
+      "cache_dir": "~/.cache/ollamasearch",
+      "source_char_budget": 1500,
+      "context_char_budget": 6000,
+      "passage_chars": 500,
+      "think": false,
+      "temperature": 0.0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "max_tokens": 1024,
+      "agent_max_steps": 4,
+      "multi_verify": true,
+      "llm_timeout": 600.0
+    }
+  },
+  "groups": [
+    {
+      "model": "llama3.2:3b",
+      "mode": "agent",
+      "n": 60,
+      "accuracy": 0.08333333333333333,
+      "by_category": {
+        "biology": 0.18181818181818182,
+        "geography": 0.0,
+        "history-of-kazakhstan": 0.1,
+        "literature": 0.0,
+        "world-history": 0.09090909090909091
+      },
+      "latency_p50_s": 2.9452074484997866,
+      "latency_p95_s": 7.427970402950152,
+      "latency_mean_s": 3.7193982243831063,
+      "tokens_per_s": 79.19465019139011,
+      "mean_prompt_tokens": 1414.15,
+      "mean_eval_tokens": 242.88333333333333,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.016666666666666666,
+        "f1": 0.027008672776104463,
+        "stem_match": 0.08333333333333333,
+        "gold_in_context": 0.4166666666666667,
+        "abstained": 0.3333333333333333
+      },
+      "agent": {
+        "tool_calls_per_question": 2.1666666666666665,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 0.9666666666666667,
+        "fetched_rate": 0.11666666666666667,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.3,
+        "mean_steps": 2.8666666666666667
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "closed",
+      "n": 60,
+      "accuracy": 0.05,
+      "by_category": {
+        "biology": 0.09090909090909091,
+        "geography": 0.0,
+        "history-of-kazakhstan": 0.0,
+        "literature": 0.0,
+        "world-history": 0.18181818181818182
+      },
+      "latency_p50_s": 0.49860571199951664,
+      "latency_p95_s": 2.355015140299382,
+      "latency_mean_s": 0.8674481774333193,
+      "tokens_per_s": 81.75999635793183,
+      "mean_prompt_tokens": 106.78333333333333,
+      "mean_eval_tokens": 55.483333333333334,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.016666666666666666,
+        "f1": 0.03685569209762758,
+        "stem_match": 0.05,
+        "gold_in_context": null,
+        "abstained": 0.016666666666666666
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "multi",
+      "n": 60,
+      "accuracy": 0.3,
+      "by_category": {
+        "biology": 0.36363636363636365,
+        "geography": 0.4444444444444444,
+        "history-of-kazakhstan": 0.15,
+        "literature": 0.2222222222222222,
+        "world-history": 0.45454545454545453
+      },
+      "latency_p50_s": 12.926815662500303,
+      "latency_p95_s": 29.8939730170493,
+      "latency_mean_s": 15.90243370136668,
+      "tokens_per_s": 78.86606576716044,
+      "mean_prompt_tokens": 5084.75,
+      "mean_eval_tokens": 553.0833333333334,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.09748972215148685,
+        "stem_match": 0.3333333333333333,
+        "gold_in_context": 0.9833333333333333,
+        "abstained": 0.1
+      },
+      "multi": {
+        "llm_calls_per_question": 6.266666666666667,
+        "searches_per_question": 4.6,
+        "sub_questions_per_question": 2.466666666666667,
+        "verifier_rejection_rate": 0.03333333333333333,
+        "follow_up_rate": 0.0
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "rag",
+      "n": 60,
+      "accuracy": 0.5166666666666667,
+      "by_category": {
+        "biology": 0.7272727272727273,
+        "geography": 0.4444444444444444,
+        "history-of-kazakhstan": 0.6,
+        "literature": 0.2222222222222222,
+        "world-history": 0.45454545454545453
+      },
+      "latency_p50_s": 1.2642127409999375,
+      "latency_p95_s": 2.5972848296501065,
+      "latency_mean_s": 1.3702586265833512,
+      "tokens_per_s": 76.19113658260927,
+      "mean_prompt_tokens": 1583.3166666666666,
+      "mean_eval_tokens": 58.233333333333334,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.1,
+        "f1": 0.2719001831290161,
+        "stem_match": 0.55,
+        "gold_in_context": 0.9833333333333333,
+        "abstained": 0.03333333333333333
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "agent",
+      "n": 60,
+      "accuracy": 0.0,
+      "by_category": {
+        "biology": 0.0,
+        "geography": 0.0,
+        "history-of-kazakhstan": 0.0,
+        "literature": 0.0,
+        "world-history": 0.0
+      },
+      "latency_p50_s": 1.689066394499605,
+      "latency_p95_s": 7.85793301994745,
+      "latency_mean_s": 2.977686465033306,
+      "tokens_per_s": 148.6131930325054,
+      "mean_prompt_tokens": 431.6166666666667,
+      "mean_eval_tokens": 383.23333333333335,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.00218185182288934,
+        "stem_match": 0.0,
+        "gold_in_context": 0.0,
+        "abstained": 0.1
+      },
+      "agent": {
+        "tool_calls_per_question": 0.0,
+        "invalid_call_rate": null,
+        "searched_rate": 0.0,
+        "fetched_rate": 0.0,
+        "text_tool_call_rate": null,
+        "step_limit_rate": 0.0,
+        "mean_steps": 1.0
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "closed",
+      "n": 60,
+      "accuracy": 0.0,
+      "by_category": {
+        "biology": 0.0,
+        "geography": 0.0,
+        "history-of-kazakhstan": 0.0,
+        "literature": 0.0,
+        "world-history": 0.0
+      },
+      "latency_p50_s": 1.0288140664997627,
+      "latency_p95_s": 1.945574514749387,
+      "latency_mean_s": 1.1855003697499342,
+      "tokens_per_s": 151.4700106344155,
+      "mean_prompt_tokens": 94.61666666666666,
+      "mean_eval_tokens": 146.1,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.0006802721088435374,
+        "stem_match": 0.0,
+        "gold_in_context": null,
+        "abstained": 0.03333333333333333
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "multi",
+      "n": 60,
+      "accuracy": 0.08333333333333333,
+      "by_category": {
+        "biology": 0.2727272727272727,
+        "geography": 0.0,
+        "history-of-kazakhstan": 0.1,
+        "literature": 0.0,
+        "world-history": 0.0
+      },
+      "latency_p50_s": 7.80576444899998,
+      "latency_p95_s": 16.192590965750057,
+      "latency_mean_s": 8.89123618299988,
+      "tokens_per_s": 152.8317100107232,
+      "mean_prompt_tokens": 4730.65,
+      "mean_eval_tokens": 441.81666666666666,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.02768533163526988,
+        "stem_match": 0.08333333333333333,
+        "gold_in_context": 0.9666666666666667,
+        "abstained": 0.03333333333333333
+      },
+      "multi": {
+        "llm_calls_per_question": 5.95,
+        "searches_per_question": 3.8833333333333333,
+        "sub_questions_per_question": 1.9833333333333334,
+        "verifier_rejection_rate": 0.016666666666666666,
+        "follow_up_rate": 0.016666666666666666
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "rag",
+      "n": 60,
+      "accuracy": 0.3333333333333333,
+      "by_category": {
+        "biology": 0.5454545454545454,
+        "geography": 0.5555555555555556,
+        "history-of-kazakhstan": 0.35,
+        "literature": 0.2222222222222222,
+        "world-history": 0.0
+      },
+      "latency_p50_s": 1.2670608585012815,
+      "latency_p95_s": 2.6132274003028204,
+      "latency_mean_s": 1.3757027573502152,
+      "tokens_per_s": 145.6521929969302,
+      "mean_prompt_tokens": 1566.0833333333333,
+      "mean_eval_tokens": 137.2,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.06903453382529748,
+        "stem_match": 0.38333333333333336,
+        "gold_in_context": 0.9833333333333333,
+        "abstained": 0.016666666666666666
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "agent",
+      "n": 60,
+      "accuracy": 0.18333333333333332,
+      "by_category": {
+        "biology": 0.18181818181818182,
+        "geography": 0.2222222222222222,
+        "history-of-kazakhstan": 0.2,
+        "literature": 0.1111111111111111,
+        "world-history": 0.18181818181818182
+      },
+      "latency_p50_s": 1.21986886149989,
+      "latency_p95_s": 4.143745978099558,
+      "latency_mean_s": 1.6122216568499426,
+      "tokens_per_s": 81.73164183241666,
+      "mean_prompt_tokens": 1035.8166666666666,
+      "mean_eval_tokens": 104.0,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.04035161156447429,
+        "stem_match": 0.21666666666666667,
+        "gold_in_context": 0.5333333333333333,
+        "abstained": 0.31666666666666665
+      },
+      "agent": {
+        "tool_calls_per_question": 0.7,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 0.6333333333333333,
+        "fetched_rate": 0.06666666666666667,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 1.7
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "closed",
+      "n": 60,
+      "accuracy": 0.016666666666666666,
+      "by_category": {
+        "biology": 0.0,
+        "geography": 0.1111111111111111,
+        "history-of-kazakhstan": 0.0,
+        "literature": 0.0,
+        "world-history": 0.0
+      },
+      "latency_p50_s": 0.1976112859993009,
+      "latency_p95_s": 1.4874737922013985,
+      "latency_mean_s": 0.5271283119832636,
+      "tokens_per_s": 83.79380431391931,
+      "mean_prompt_tokens": 94.61666666666666,
+      "mean_eval_tokens": 30.783333333333335,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.0047619047619047615,
+        "stem_match": 0.016666666666666666,
+        "gold_in_context": null,
+        "abstained": 0.7833333333333333
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "multi",
+      "n": 60,
+      "accuracy": 0.4,
+      "by_category": {
+        "biology": 0.6363636363636364,
+        "geography": 0.2222222222222222,
+        "history-of-kazakhstan": 0.3,
+        "literature": 0.4444444444444444,
+        "world-history": 0.45454545454545453
+      },
+      "latency_p50_s": 6.531737375000375,
+      "latency_p95_s": 21.78781815724959,
+      "latency_mean_s": 7.726816036650082,
+      "tokens_per_s": 82.67879794366326,
+      "mean_prompt_tokens": 3481.133333333333,
+      "mean_eval_tokens": 260.18333333333334,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.11518243906745433,
+        "stem_match": 0.4166666666666667,
+        "gold_in_context": 0.9833333333333333,
+        "abstained": 0.11666666666666667
+      },
+      "multi": {
+        "llm_calls_per_question": 4.166666666666667,
+        "searches_per_question": 2.0833333333333335,
+        "sub_questions_per_question": 1.0,
+        "verifier_rejection_rate": 0.08333333333333333,
+        "follow_up_rate": 0.06666666666666667
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "rag",
+      "n": 60,
+      "accuracy": 0.35,
+      "by_category": {
+        "biology": 0.6363636363636364,
+        "geography": 0.3333333333333333,
+        "history-of-kazakhstan": 0.25,
+        "literature": 0.3333333333333333,
+        "world-history": 0.2727272727272727
+      },
+      "latency_p50_s": 1.4626968395004951,
+      "latency_p95_s": 4.039998562100571,
+      "latency_mean_s": 1.6773690520667515,
+      "tokens_per_s": 78.93209289486013,
+      "mean_prompt_tokens": 1566.0833333333333,
+      "mean_eval_tokens": 82.8,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.07308635760723697,
+        "stem_match": 0.36666666666666664,
+        "gold_in_context": 0.9833333333333333,
+        "abstained": 0.25
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "agent",
+      "n": 60,
+      "accuracy": 0.26666666666666666,
+      "by_category": {
+        "biology": 0.2727272727272727,
+        "geography": 0.3333333333333333,
+        "history-of-kazakhstan": 0.25,
+        "literature": 0.4444444444444444,
+        "world-history": 0.09090909090909091
+      },
+      "latency_p50_s": 3.960865786499653,
+      "latency_p95_s": 14.57594209659946,
+      "latency_mean_s": 5.031439505283273,
+      "tokens_per_s": 65.90881006260946,
+      "mean_prompt_tokens": 1346.8166666666666,
+      "mean_eval_tokens": 290.21666666666664,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.036008736695643036,
+        "stem_match": 0.2833333333333333,
+        "gold_in_context": 0.5166666666666667,
+        "abstained": 0.06666666666666667
+      },
+      "agent": {
+        "tool_calls_per_question": 0.7166666666666667,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 0.5333333333333333,
+        "fetched_rate": 0.11666666666666667,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.016666666666666666,
+        "mean_steps": 1.7
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "closed",
+      "n": 60,
+      "accuracy": 0.08333333333333333,
+      "by_category": {
+        "biology": 0.09090909090909091,
+        "geography": 0.1111111111111111,
+        "history-of-kazakhstan": 0.05,
+        "literature": 0.0,
+        "world-history": 0.18181818181818182
+      },
+      "latency_p50_s": 2.2881568694992893,
+      "latency_p95_s": 11.403096161249858,
+      "latency_mean_s": 3.5742918317333685,
+      "tokens_per_s": 69.94228005579231,
+      "mean_prompt_tokens": 91.8,
+      "mean_eval_tokens": 222.95,
+      "error_rate": 0.0,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.011671255004158219,
+        "stem_match": 0.08333333333333333,
+        "gold_in_context": null,
+        "abstained": 0.03333333333333333
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "multi",
+      "n": 60,
+      "accuracy": 0.5,
+      "by_category": {
+        "biology": 0.7272727272727273,
+        "geography": 0.4444444444444444,
+        "history-of-kazakhstan": 0.5,
+        "literature": 0.3333333333333333,
+        "world-history": 0.45454545454545453
+      },
+      "latency_p50_s": 4.8063957509994,
+      "latency_p95_s": 12.789226149749897,
+      "latency_mean_s": 6.23384027714989,
+      "tokens_per_s": 68.38147918882541,
+      "mean_prompt_tokens": 3167.4166666666665,
+      "mean_eval_tokens": 305.8666666666667,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.16193150479508617,
+        "stem_match": 0.5333333333333333,
+        "gold_in_context": 0.9833333333333333,
+        "abstained": 0.08333333333333333
+      },
+      "multi": {
+        "llm_calls_per_question": 4.45,
+        "searches_per_question": 2.283333333333333,
+        "sub_questions_per_question": 1.05,
+        "verifier_rejection_rate": 0.13333333333333333,
+        "follow_up_rate": 0.11666666666666667
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "rag",
+      "n": 60,
+      "accuracy": 0.6,
+      "by_category": {
+        "biology": 0.7272727272727273,
+        "geography": 0.5555555555555556,
+        "history-of-kazakhstan": 0.55,
+        "literature": 0.4444444444444444,
+        "world-history": 0.7272727272727273
+      },
+      "latency_p50_s": 1.4542392109997309,
+      "latency_p95_s": 5.008105435900052,
+      "latency_mean_s": 2.185218271449973,
+      "tokens_per_s": 68.22543803796509,
+      "mean_prompt_tokens": 1240.9833333333333,
+      "mean_eval_tokens": 115.93333333333334,
+      "error_rate": 0.016666666666666666,
+      "metrics": {
+        "em": 0.0,
+        "f1": 0.13011385679393345,
+        "stem_match": 0.6333333333333333,
+        "gold_in_context": 0.9833333333333333,
+        "abstained": 0.08333333333333333
+      }
+    }
+  ]
+}

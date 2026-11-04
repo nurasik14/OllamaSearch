@@ -1,0 +1,67 @@
+{
+  "suite": "hotpotqa",
+  "title": "HotpotQA (distractor, dev)",
+  "source_url": "https://huggingface.co/datasets/hotpotqa/hotpot_qa",
+  "license": "CC BY-SA 4.0",
+  "citation": "Yang et al., EMNLP 2018",
+  "live": false,
+  "models": [
+    "qwen2.5:1.5b",
+    "qwen3.5:2b",
+    "qwen2.5:3b",
+    "llama3.2:3b"
+  ],
+  "modes": [
+    "closed",
+    "rag",
+    "agent",
+    "multi"
+  ],
+  "repeats": 1,
+  "sample": 60,
+  "default_sample": 100,
+  "n_items": 60,
+  "seed": 42,
+  "data_dir": "~/.cache/ollamasearch/datasets",
+  "dataset_files": [
+    {
+      "url": "https://huggingface.co/datasets/hotpotqa/hotpot_qa/resolve/main/distractor/validation-00000-of-00001.parquet",
+      "path": "~/.cache/ollamasearch/datasets/hotpotqa/distractor-validation-00000-of-00001.parquet",
+      "bytes": 27452575,
+      "sha256": "c20b638ca82b21d04fe12e14ff417ad05153d4d215a65de54497fca4e972f7c6",
+      "matches_pinned_sha256": true
+    }
+  ],
+  "grader": "string",
+  "judge_model": null,
+  "ollamasearch_version": "0.2.0",
+  "ollama_server_version": "0.18.1",
+  "python": "3.14.8",
+  "started_at": "2026-11-03T10:48:25+00:00",
+  "settings": {
+    "ollama_host": null,
+    "model": "qwen3.5:2b",
+    "searxng_url": "http://127.0.0.1:8080",
+    "backend": "searxng",
+    "top_k": 5,
+    "search_timeout": 15.0,
+    "connect_timeout": 5.0,
+    "read_timeout": 15.0,
+    "max_page_bytes": 3000000,
+    "fetch_concurrency": 8,
+    "per_host_concurrency": 2,
+    "use_truststore": true,
+    "cache_dir": "~/.cache/ollamasearch",
+    "source_char_budget": 1500,
+    "context_char_budget": 6000,
+    "passage_chars": 500,
+    "think": false,
+    "temperature": 0.0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "max_tokens": 1024,
+    "agent_max_steps": 4,
+    "multi_verify": true,
+    "llm_timeout": 600.0
+  }
+}

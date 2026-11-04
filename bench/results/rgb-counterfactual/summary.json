@@ -1,0 +1,398 @@
+{
+  "meta": {
+    "suite": "rgb-counterfactual",
+    "title": "RGB counterfactual robustness (en)",
+    "source_url": "https://github.com/chen700564/RGB",
+    "license": "CC BY-NC-SA 4.0",
+    "citation": "Chen et al., AAAI 2024",
+    "live": false,
+    "models": [
+      "qwen2.5:1.5b",
+      "qwen3.5:2b",
+      "qwen2.5:3b",
+      "llama3.2:3b"
+    ],
+    "modes": [
+      "rag",
+      "agent",
+      "multi"
+    ],
+    "repeats": 1,
+    "sample": 40,
+    "default_sample": 100,
+    "n_items": 40,
+    "seed": 42,
+    "data_dir": "~/.cache/ollamasearch/datasets",
+    "dataset_files": [
+      {
+        "url": "https://raw.githubusercontent.com/chen700564/RGB/master/data/en_fact.json",
+        "path": "~/.cache/ollamasearch/datasets/rgb/en_fact.json",
+        "bytes": 241320,
+        "sha256": "92f4b2330ee407f74fbd923197028ef5140cfbc1f4b4092efec2d4d10ae6c9e5",
+        "matches_pinned_sha256": true
+      }
+    ],
+    "grader": "string",
+    "judge_model": null,
+    "ollamasearch_version": "0.2.0",
+    "ollama_server_version": "0.18.1",
+    "python": "3.14.8",
+    "started_at": "2026-11-03T17:46:03+00:00",
+    "settings": {
+      "ollama_host": null,
+      "model": "qwen3.5:2b",
+      "searxng_url": "http://127.0.0.1:8080",
+      "backend": "searxng",
+      "top_k": 5,
+      "search_timeout": 15.0,
+      "connect_timeout": 5.0,
+      "read_timeout": 15.0,
+      "max_page_bytes": 3000000,
+      "fetch_concurrency": 8,
+      "per_host_concurrency": 2,
+      "use_truststore": true,
+      "cache_dir": "~/.cache/ollamasearch",
+      "source_char_budget": 1500,
+      "context_char_budget": 6000,
+      "passage_chars": 500,
+      "think": false,
+      "temperature": 0.0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "max_tokens": 1024,
+      "agent_max_steps": 4,
+      "multi_verify": true,
+      "llm_timeout": 600.0
+    }
+  },
+  "groups": [
+    {
+      "model": "llama3.2:3b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 0.8759885694994409,
+      "latency_p95_s": 1.224818036199212,
+      "latency_mean_s": 0.9254474729498497,
+      "tokens_per_s": 81.2344491426101,
+      "mean_prompt_tokens": 909.05,
+      "mean_eval_tokens": 45.725,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.025,
+        "misled_rate": 0.8
+      },
+      "agent": {
+        "tool_calls_per_question": 1.0,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 1.0,
+        "fetched_rate": 0.0,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 2.0
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 9.548164047000228,
+      "latency_p95_s": 12.272319760550044,
+      "latency_mean_s": 8.914702657100042,
+      "tokens_per_s": 81.62103815506775,
+      "mean_prompt_tokens": 2472.275,
+      "mean_eval_tokens": 307.075,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.125,
+        "misled_rate": 0.6
+      },
+      "multi": {
+        "llm_calls_per_question": 6.45,
+        "searches_per_question": 3.9,
+        "sub_questions_per_question": 2.725,
+        "verifier_rejection_rate": 0.075,
+        "follow_up_rate": 0.0
+      }
+    },
+    {
+      "model": "llama3.2:3b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 0.47374192199959,
+      "latency_p95_s": 1.3703302299497857,
+      "latency_mean_s": 0.5803429633749374,
+      "tokens_per_s": 81.30321869591891,
+      "mean_prompt_tokens": 385.725,
+      "mean_eval_tokens": 29.025,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.075,
+        "error_correction_rate": 0.0,
+        "true_answer_rate": 0.05,
+        "misled_rate": 0.875
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 0.14113635949979653,
+      "latency_p95_s": 0.2563957583502087,
+      "latency_mean_s": 0.16847859864994916,
+      "tokens_per_s": 162.27446515091853,
+      "mean_prompt_tokens": 409.05,
+      "mean_eval_tokens": 11.45,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.1,
+        "misled_rate": 0.0
+      },
+      "agent": {
+        "tool_calls_per_question": 0.0,
+        "invalid_call_rate": null,
+        "searched_rate": 0.0,
+        "fetched_rate": 0.0,
+        "text_tool_call_rate": null,
+        "step_limit_rate": 0.0,
+        "mean_steps": 1.0
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 7.263477325000167,
+      "latency_p95_s": 9.433211106800101,
+      "latency_mean_s": 6.895156171199983,
+      "tokens_per_s": 155.35554532794114,
+      "mean_prompt_tokens": 2096.5,
+      "mean_eval_tokens": 311.75,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.025,
+        "misled_rate": 0.9
+      },
+      "multi": {
+        "llm_calls_per_question": 5.525,
+        "searches_per_question": 2.775,
+        "sub_questions_per_question": 1.775,
+        "verifier_rejection_rate": 0.0,
+        "follow_up_rate": 0.0
+      }
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 0.4142602884999178,
+      "latency_p95_s": 0.8907925928999019,
+      "latency_mean_s": 0.45687833235000425,
+      "tokens_per_s": 150.12789174922378,
+      "mean_prompt_tokens": 390.275,
+      "mean_eval_tokens": 42.275,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.0,
+        "misled_rate": 0.975
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 1.0508580880000409,
+      "latency_p95_s": 1.550539961250183,
+      "latency_mean_s": 1.095409095324976,
+      "tokens_per_s": 82.43040250980965,
+      "mean_prompt_tokens": 1246.075,
+      "mean_eval_tokens": 61.75,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.0,
+        "misled_rate": 0.9
+      },
+      "agent": {
+        "tool_calls_per_question": 1.175,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 0.975,
+        "fetched_rate": 0.2,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.0,
+        "mean_steps": 2.175
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 4.435661539499961,
+      "latency_p95_s": 5.201537144399662,
+      "latency_mean_s": 4.503052891024981,
+      "tokens_per_s": 84.45799858680824,
+      "mean_prompt_tokens": 1480.3,
+      "mean_eval_tokens": 149.275,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.0,
+        "misled_rate": 0.925
+      },
+      "multi": {
+        "llm_calls_per_question": 4.05,
+        "searches_per_question": 2.0,
+        "sub_questions_per_question": 1.0,
+        "verifier_rejection_rate": 0.0,
+        "follow_up_rate": 0.0
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 0.5252053010001418,
+      "latency_p95_s": 1.4191328980997922,
+      "latency_mean_s": 0.656351757225002,
+      "tokens_per_s": 81.86173978466189,
+      "mean_prompt_tokens": 390.275,
+      "mean_eval_tokens": 34.175,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.0,
+        "misled_rate": 0.875
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "agent",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 2.0128665240001737,
+      "latency_p95_s": 21.79743101980009,
+      "latency_mean_s": 8.308536165775024,
+      "tokens_per_s": 68.54291717381292,
+      "mean_prompt_tokens": 3011.85,
+      "mean_eval_tokens": 491.6,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.125,
+        "misled_rate": 0.725
+      },
+      "agent": {
+        "tool_calls_per_question": 2.325,
+        "invalid_call_rate": 0.0,
+        "searched_rate": 1.0,
+        "fetched_rate": 0.425,
+        "text_tool_call_rate": 0.0,
+        "step_limit_rate": 0.425,
+        "mean_steps": 2.9
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "multi",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 3.6017666175000613,
+      "latency_p95_s": 4.3865443189002455,
+      "latency_mean_s": 3.7427446860000146,
+      "tokens_per_s": 69.91617905529284,
+      "mean_prompt_tokens": 1654.35,
+      "mean_eval_tokens": 177.2,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.0,
+        "misled_rate": 0.925
+      },
+      "multi": {
+        "llm_calls_per_question": 4.075,
+        "searches_per_question": 2.025,
+        "sub_questions_per_question": 1.0,
+        "verifier_rejection_rate": 0.025,
+        "follow_up_rate": 0.025
+      }
+    },
+    {
+      "model": "qwen3.5:2b",
+      "mode": "rag",
+      "n": 40,
+      "accuracy": 0.0,
+      "by_category": {
+        "counterfactual": 0.0
+      },
+      "latency_p50_s": 0.7795626150000317,
+      "latency_p95_s": 2.492752699800119,
+      "latency_mean_s": 1.0685722923000298,
+      "tokens_per_s": 70.47554332752834,
+      "mean_prompt_tokens": 405.5,
+      "mean_eval_tokens": 51.675,
+      "error_rate": 0.0,
+      "metrics": {
+        "error_detection_rate": 0.0,
+        "error_correction_rate": null,
+        "true_answer_rate": 0.0,
+        "misled_rate": 0.975
+      }
+    }
+  ]
+}

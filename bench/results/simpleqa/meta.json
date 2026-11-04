@@ -1,0 +1,67 @@
+{
+  "suite": "simpleqa",
+  "title": "SimpleQA (live web)",
+  "source_url": "https://github.com/openai/simple-evals",
+  "license": "MIT",
+  "citation": "Wei et al., 2024",
+  "live": true,
+  "models": [
+    "qwen2.5:1.5b",
+    "qwen3.5:2b",
+    "qwen2.5:3b",
+    "llama3.2:3b"
+  ],
+  "modes": [
+    "closed",
+    "rag",
+    "agent",
+    "multi"
+  ],
+  "repeats": 1,
+  "sample": 60,
+  "default_sample": 100,
+  "n_items": 60,
+  "seed": 42,
+  "data_dir": "~/.cache/ollamasearch/datasets",
+  "dataset_files": [
+    {
+      "url": "https://openaipublic.blob.core.windows.net/simple-evals/simple_qa_test_set.csv",
+      "path": "~/.cache/ollamasearch/datasets/simpleqa/simple_qa_test_set.csv",
+      "bytes": 2012910,
+      "sha256": "feee3f7e7db3617e94e8fcf1977b756ec420ef8568f4e0fcbbe0e92e9d5fc032",
+      "matches_pinned_sha256": true
+    }
+  ],
+  "grader": "string",
+  "judge_model": null,
+  "ollamasearch_version": "0.2.0",
+  "ollama_server_version": "0.18.1",
+  "python": "3.14.8",
+  "started_at": "2026-11-03T18:10:56+00:00",
+  "settings": {
+    "ollama_host": null,
+    "model": "qwen3.5:2b",
+    "searxng_url": "http://127.0.0.1:8080",
+    "backend": "searxng",
+    "top_k": 5,
+    "search_timeout": 15.0,
+    "connect_timeout": 5.0,
+    "read_timeout": 15.0,
+    "max_page_bytes": 3000000,
+    "fetch_concurrency": 8,
+    "per_host_concurrency": 2,
+    "use_truststore": true,
+    "cache_dir": "~/.cache/ollamasearch",
+    "source_char_budget": 1500,
+    "context_char_budget": 6000,
+    "passage_chars": 500,
+    "think": false,
+    "temperature": 0.0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "max_tokens": 1024,
+    "agent_max_steps": 4,
+    "multi_verify": true,
+    "llm_timeout": 600.0
+  }
+}

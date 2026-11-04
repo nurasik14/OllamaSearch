@@ -1,0 +1,66 @@
+{
+  "suite": "rgb-noise",
+  "title": "RGB noise robustness (en)",
+  "source_url": "https://github.com/chen700564/RGB",
+  "license": "CC BY-NC-SA 4.0",
+  "citation": "Chen et al., AAAI 2024",
+  "live": false,
+  "models": [
+    "qwen2.5:1.5b",
+    "qwen3.5:2b",
+    "qwen2.5:3b",
+    "llama3.2:3b"
+  ],
+  "modes": [
+    "rag",
+    "agent",
+    "multi"
+  ],
+  "repeats": 1,
+  "sample": 40,
+  "default_sample": 100,
+  "n_items": 120,
+  "seed": 42,
+  "data_dir": "~/.cache/ollamasearch/datasets",
+  "dataset_files": [
+    {
+      "url": "https://raw.githubusercontent.com/chen700564/RGB/master/data/en_refine.json",
+      "path": "~/.cache/ollamasearch/datasets/rgb/en_refine.json",
+      "bytes": 7229738,
+      "sha256": "1be6ec4b85364b5590c7683ed4df8d47535ae21bc021bbcd3f44a71579f64bcb",
+      "matches_pinned_sha256": true
+    }
+  ],
+  "grader": "string",
+  "judge_model": null,
+  "ollamasearch_version": "0.2.0",
+  "ollama_server_version": "0.18.1",
+  "python": "3.14.8",
+  "started_at": "2026-11-03T15:52:50+00:00",
+  "settings": {
+    "ollama_host": null,
+    "model": "qwen3.5:2b",
+    "searxng_url": "http://127.0.0.1:8080",
+    "backend": "searxng",
+    "top_k": 5,
+    "search_timeout": 15.0,
+    "connect_timeout": 5.0,
+    "read_timeout": 15.0,
+    "max_page_bytes": 3000000,
+    "fetch_concurrency": 8,
+    "per_host_concurrency": 2,
+    "use_truststore": true,
+    "cache_dir": "~/.cache/ollamasearch",
+    "source_char_budget": 1500,
+    "context_char_budget": 6000,
+    "passage_chars": 500,
+    "think": false,
+    "temperature": 0.0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "max_tokens": 1024,
+    "agent_max_steps": 4,
+    "multi_verify": true,
+    "llm_timeout": 600.0
+  }
+}
