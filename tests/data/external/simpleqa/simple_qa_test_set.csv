@@ -1,0 +1,5 @@
+metadata,problem,answer
+"{'topic': 'Science and technology', 'answer_type': 'Person', 'urls': ['https://en.wikipedia.org/wiki/IEEE_Frank_Rosenblatt_Award']}",Who received the IEEE Frank Rosenblatt Award in 2010?,Michio Sugeno
+"{'topic': 'Geography', 'answer_type': 'Date', 'urls': ['https://en.wikipedia.org/wiki/C%C3%B3mbita']}","What year was the municipality of Cómbita, Boyacá, Colombia, founded?",1586
+"{'topic': 'TV shows', 'answer_type': 'Other', 'urls': ['https://greysanatomy.fandom.com/wiki/White_Wedding']}",What episode did Derek and Meredith get legally married in Grey's Anatomy?,"Season 7, Episode 20: White Wedding"
+"{'topic': 'Geography', 'answer_type': 'Place', 'urls': ['https://en.wikipedia.org/wiki/OpenAI']}",What city is OpenAI headquartered in?,"San Francisco (California)"

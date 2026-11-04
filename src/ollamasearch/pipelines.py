@@ -26,7 +26,7 @@ from .search import PageFetcher, SearchBackend, SearchError
 
 log = logging.getLogger(__name__)
 
-MODES = ("closed", "rag", "agent")
+MODES = ("closed", "rag", "agent", "multi")
 TokenCallback = Callable[[str], None]
 
 _CITE_RE = re.compile(r"\[(\d{1,3}(?:\s*[,;]\s*\d{1,3})*)\]")
@@ -331,7 +331,7 @@ def parse_text_tool_calls(content: str) -> list[ToolCall]:
     return calls
 
 
-class _Registry:
+class SourceRegistry:
     """Stable source numbering across all tool calls of one agent run."""
 
     def __init__(self) -> None:
@@ -393,7 +393,7 @@ class AgentPipeline(Pipeline):
                 return value.strip()
         return None
 
-    def _web_search(self, query: str, registry: _Registry) -> tuple[str, str, str]:
+    def _web_search(self, query: str, registry: SourceRegistry) -> tuple[str, str, str]:
         try:
             results = self.backend.search(query, self.results_per_search)
         except SearchError as exc:
@@ -403,7 +403,7 @@ class AgentPipeline(Pipeline):
             return search_results_text(rows), "error", "no results"
         return search_results_text(rows), "ok", f"{len(rows)} results"
 
-    def _web_fetch(self, url: str, question: str, registry: _Registry) -> tuple[str, str, str]:
+    def _web_fetch(self, url: str, question: str, registry: SourceRegistry) -> tuple[str, str, str]:
         page = self.fetcher.fetch_many([url])[0]
         if not page.ok:
             return f"Could not fetch {url}: {page.error}", "error", page.error or ""
@@ -423,7 +423,7 @@ class AgentPipeline(Pipeline):
         call: ToolCall,
         step: int,
         question: str,
-        registry: _Registry,
+        registry: SourceRegistry,
         from_text: bool,
         seen: set[tuple[str, str]],
     ) -> tuple[ToolCallRecord, str]:
@@ -471,7 +471,7 @@ class AgentPipeline(Pipeline):
     ) -> Answer:
         self.llm.reset_usage()
         start = time.perf_counter()
-        registry = _Registry()
+        registry = SourceRegistry()
         records: list[ToolCallRecord] = []
         messages: list[Message] = [
             {"role": "system", "content": AGENT_SYSTEM},
@@ -572,4 +572,11 @@ def build_pipeline(
             fetch_chars=settings.source_char_budget + 1000,
             passage_chars=settings.passage_chars,
         )
+    if mode == "multi":
+        from .multiagent import ResearchPipeline  # local import: multiagent imports this module
+
+        return ResearchPipeline(llm, backend, fetcher, settings, verify=settings.multi_verify)
     raise ValueError(f"unknown mode {mode!r}; choose from {', '.join(MODES)}")
+
+
+_Registry = SourceRegistry  # backwards-compatible private alias

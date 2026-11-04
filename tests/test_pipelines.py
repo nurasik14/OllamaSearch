@@ -317,3 +317,12 @@ def test_agent_records_tokens_across_steps(fake: FakeOllama, agent: AgentPipelin
     answer = agent.run("q")
     assert answer.tokens["calls"] == 2 and answer.tokens["eval_tokens"] == 20
     assert answer.to_dict()["cited_urls"] == []
+
+
+def test_multi_mode_is_registered_and_answers(
+    fake: FakeOllama, llm: LLM, corpus: CorpusBackend, corpus_fetcher: Fetcher
+) -> None:
+    pipeline = build_pipeline("multi", llm, corpus, corpus_fetcher, Settings())
+    answer = pipeline.run("population of Zarnitsa-on-Ural")
+    assert answer.mode == "multi"
+    assert answer.text

@@ -25,6 +25,8 @@ dependencies = [
 
 [project.optional-dependencies]
 plot = ["matplotlib>=3.8"]
+# third-party benchmark datasets published as Parquet (HotpotQA on the Hugging Face Hub)
+datasets = ["pyarrow>=15"]
 
 [project.scripts]
 ollamasearch = "ollamasearch.cli:app"

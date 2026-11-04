@@ -179,3 +179,32 @@ def test_summarize_rows_groups_and_metrics() -> None:
     assert agent["invalid_call_rate"] == 0.5
     assert agent["searched_rate"] == 1.0
     assert groups[("m", "closed")]["citation_hit_rate"] is None
+
+
+def test_multi_metrics_from_trace() -> None:
+    from ollamasearch.bench.scoring import multi_metrics
+
+    def call(name: str, detail: str = "", args: object = None) -> dict[str, object]:
+        return {"name": name, "detail": detail, "arguments": args, "status": "ok"}
+
+    a1 = {
+        "tool_calls": [
+            call("plan"),
+            call("search"),
+            call("fetch"),
+            call("read", args={"sub_question": "x"}),
+            call("synthesize"),
+            call("verify", "unsupported: no source -> follow-up: y"),
+            call("search"),
+            call("read", args={"sub_question": "y"}),
+            call("synthesize"),
+            call("verify", "supported"),
+        ]
+    }
+    a2 = {"tool_calls": [call("plan"), call("search"), call("read", args={"sub_question": "z"})]}
+    m = multi_metrics([a1, a2])
+    assert m["llm_calls_per_question"] == (7 + 2) / 2
+    assert m["searches_per_question"] == 1.5
+    assert m["sub_questions_per_question"] == 1.5
+    assert m["verifier_rejection_rate"] == 0.5
+    assert m["follow_up_rate"] == 0.5

@@ -65,6 +65,7 @@ class Settings:
     # is full and then keeps going (context shift), so a degenerate small model never stops.
     max_tokens: int = 1024
     agent_max_steps: int = 4
+    multi_verify: bool = True  # multi mode: run the verifier role (one extra LLM call or more)
     llm_timeout: float = 300.0  # max seconds waiting on Ollama (per response / stream chunk)
 
     @classmethod
@@ -103,6 +104,7 @@ class Settings:
         put("OLLAMASEARCH_SEED", "seed", int)
         put("OLLAMASEARCH_NUM_CTX", "num_ctx", int)
         put("OLLAMASEARCH_MAX_STEPS", "agent_max_steps", int)
+        put("OLLAMASEARCH_MULTI_VERIFY", "multi_verify", _bool)
         put("OLLAMASEARCH_LLM_TIMEOUT", "llm_timeout", float)
         put("OLLAMASEARCH_MAX_TOKENS", "max_tokens", int)
 

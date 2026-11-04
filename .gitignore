@@ -25,6 +25,14 @@ bench/results/*
 !bench/results/README.md
 !bench/results/offline-full/
 !bench/results/live/
+!bench/results/bfcl/
+!bench/results/hotpotqa/
+!bench/results/kazqad/
+!bench/results/rgb-noise/
+!bench/results/rgb-negative/
+!bench/results/rgb-counterfactual/
+!bench/results/simpleqa/
+bench/results/**/*.bak*
 
 # editors / scratch
 .vscode/

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "5a8b57f25542995d1e6f1371",
+    "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+    "answer": "yes",
+    "type": "comparison",
+    "level": "hard",
+    "supporting_facts": {"title": ["Scott Derrickson", "Ed Wood"], "sent_id": [0, 0]},
+    "context": {
+      "title": ["Ed Wood (film)", "Scott Derrickson", "Woodson, Arkansas", "Ed Wood"],
+      "sentences": [
+        ["Ed Wood is a 1994 American biographical period comedy-drama film directed and produced by Tim Burton.", " The film stars Johnny Depp as cult filmmaker Ed Wood."],
+        ["Scott Derrickson (born July 16, 1966) is an American director, screenwriter and producer.", " He lives in Los Angeles, California."],
+        ["Woodson is a census-designated place in Pulaski County, Arkansas.", " Its population was 403 at the 2010 census."],
+        ["Edward Davis Wood Jr. (October 10, 1924 – December 10, 1978) was an American filmmaker, actor, writer, producer, and director."]
+      ]
+    }
+  },
+  {
+    "id": "5a8c7595554299585d9e36b6",
+    "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+    "answer": "Chief of Protocol",
+    "type": "bridge",
+    "level": "medium",
+    "supporting_facts": {"title": ["Kiss and Tell (1945 film)", "Shirley Temple"], "sent_id": [0, 1]},
+    "context": {
+      "title": ["Meet Corliss Archer", "Shirley Temple", "Kiss and Tell (1945 film)", "Janet Waldo"],
+      "sentences": [
+        ["Meet Corliss Archer is an American radio sitcom that aired on CBS from 1943 to 1956."],
+        ["Shirley Temple Black (April 23, 1928 – February 10, 2014) was an American actress, singer, dancer, businesswoman, and diplomat.", " As an adult she served as Chief of Protocol of the United States."],
+        ["Kiss and Tell is a 1945 American comedy film starring then 17-year-old Shirley Temple as Corliss Archer."],
+        ["Janet Marie Waldo was an American radio and voice actress who played Corliss Archer on radio."]
+      ]
+    }
+  },
+  {
+    "id": "5a85ea095542994775f606a8",
+    "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+    "answer": "Animorphs",
+    "type": "bridge",
+    "level": "hard",
+    "supporting_facts": {"title": ["The Hork-Bajir Chronicles", "Animorphs"], "sent_id": [0, 0]},
+    "context": {
+      "title": ["Animorphs", "The Andalite Chronicles", "The Hork-Bajir Chronicles", "Shadowshaper"],
+      "sentences": [
+        ["Animorphs is a science fantasy series of young adult books written by Katherine Applegate, told in first person."],
+        ["The Andalite Chronicles is a companion book to the Animorphs series."],
+        ["The Hork-Bajir Chronicles is the second companion book to the Animorphs series, narrating the story of the enslaved Hork-Bajir world."],
+        ["Shadowshaper is a 2015 young adult urban fantasy novel."]
+      ]
+    }
+  }
+]

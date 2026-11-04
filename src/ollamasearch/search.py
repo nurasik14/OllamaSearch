@@ -6,7 +6,7 @@ import json
 import logging
 import threading
 import time
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -191,11 +191,27 @@ class CorpusBackend:
     name = "corpus"
 
     def __init__(self, directory: str | Path) -> None:
-        self.directory = Path(directory)
+        self.directory: Path | None = Path(directory)
         files = sorted(self.directory.glob("*.html"))
         if not files:
             raise FileNotFoundError(f"no .html files in corpus directory {self.directory}")
-        self.raw: dict[str, str] = {f.name: f.read_text(encoding="utf-8") for f in files}
+        self._index({f.name: f.read_text(encoding="utf-8") for f in files})
+
+    @classmethod
+    def from_html(cls, pages: Mapping[str, str]) -> CorpusBackend:
+        """Build an in-memory corpus from ``{file name: html}`` (e.g. one per benchmark item).
+
+        Names become URLs ``http://corpus.local/<name>``, exactly like directory corpora.
+        """
+        if not pages:
+            raise ValueError("from_html needs at least one page")
+        self = cls.__new__(cls)
+        self.directory = None
+        self._index(dict(pages))
+        return self
+
+    def _index(self, raw: dict[str, str]) -> None:
+        self.raw: dict[str, str] = raw
         self.pages: dict[str, Page] = {name: extract(html) for name, html in self.raw.items()}
         self.names = list(self.pages)
         self.bm25 = BM25([tokenize(p.title) * 2 + tokenize(p.text) for p in self.pages.values()])

@@ -170,6 +170,58 @@ def _rate(flags: Iterable[bool | None]) -> float | None:
     return sum(vals) / len(vals) if vals else None
 
 
+def agent_metrics(answers: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Agent tool-use statistics over answer traces."""
+    calls = [c for a in answers for c in a["tool_calls"]]
+    return {
+        "tool_calls_per_question": len(calls) / len(answers),
+        "invalid_call_rate": (
+            sum(c["status"] == "invalid" for c in calls) / len(calls) if calls else None
+        ),
+        "searched_rate": _rate(
+            any(c["name"] == "web_search" and c["status"] != "invalid" for c in a["tool_calls"])
+            for a in answers
+        ),
+        "fetched_rate": _rate(
+            any(c["name"] == "web_fetch" and c["status"] == "ok" for c in a["tool_calls"])
+            for a in answers
+        ),
+        "text_tool_call_rate": (
+            sum(bool(c.get("from_text")) for c in calls) / len(calls) if calls else None
+        ),
+        "step_limit_rate": _rate(a.get("step_limit_reached") for a in answers),
+        "mean_steps": sum(a.get("steps", 0) for a in answers) / len(answers),
+    }
+
+
+MULTI_ROLES = ("plan", "read", "synthesize", "verify")
+
+
+def multi_metrics(answers: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Multi-agent trace statistics: LLM calls, searches, verifier verdicts, follow-ups."""
+    n = len(answers) or 1
+
+    def calls(a: Mapping[str, Any], name: str) -> list[Mapping[str, Any]]:
+        return [c for c in a.get("tool_calls", []) if c.get("name") == name]
+
+    return {
+        "llm_calls_per_question": sum(
+            sum(1 for c in a.get("tool_calls", []) if c.get("name") in MULTI_ROLES) for a in answers
+        )
+        / n,
+        "searches_per_question": sum(len(calls(a, "search")) for a in answers) / n,
+        "sub_questions_per_question": sum(
+            len({str(c.get("arguments")) for c in calls(a, "read")}) for a in answers
+        )
+        / n,
+        "verifier_rejection_rate": _rate(
+            any(str(c.get("detail", "")).startswith("unsupported") for c in calls(a, "verify"))
+            for a in answers
+        ),
+        "follow_up_rate": _rate(len(calls(a, "verify")) > 1 for a in answers),
+    }
+
+
 def summarize_rows(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     """Aggregate scored rows (as written to runs.jsonl) by (model, mode)."""
     groups: dict[tuple[str, str], list[Mapping[str, Any]]] = defaultdict(list)
@@ -214,29 +266,9 @@ def summarize_rows(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
             "mean_eval_tokens": eval_tokens / len(answers),
             "error_rate": _rate(a.get("error") is not None for a in answers),
         }
+        if mode == "multi":
+            entry["multi"] = multi_metrics(answers)
         if mode == "agent":
-            calls = [c for a in answers for c in a["tool_calls"]]
-            entry["agent"] = {
-                "tool_calls_per_question": len(calls) / len(answers),
-                "invalid_call_rate": (
-                    sum(c["status"] == "invalid" for c in calls) / len(calls) if calls else None
-                ),
-                "searched_rate": _rate(
-                    any(
-                        c["name"] == "web_search" and c["status"] != "invalid"
-                        for c in a["tool_calls"]
-                    )
-                    for a in answers
-                ),
-                "fetched_rate": _rate(
-                    any(c["name"] == "web_fetch" and c["status"] == "ok" for c in a["tool_calls"])
-                    for a in answers
-                ),
-                "text_tool_call_rate": (
-                    sum(bool(c.get("from_text")) for c in calls) / len(calls) if calls else None
-                ),
-                "step_limit_rate": _rate(a.get("step_limit_reached") for a in answers),
-                "mean_steps": sum(a.get("steps", 0) for a in answers) / len(answers),
-            }
+            entry["agent"] = agent_metrics(answers)
         out.append(entry)
     return {"groups": out}

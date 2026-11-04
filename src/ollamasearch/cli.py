@@ -112,7 +112,7 @@ def _print_answer_footer(answer: Answer) -> None:
         )
     cited = set(answer.cited)
     shown = answer.sources
-    if answer.mode == "agent":  # agents see many search hits; list the cited ones if any
+    if answer.mode in ("agent", "multi"):  # many search hits; list the cited ones if any
         shown = [s for s in answer.sources if s.number in cited] or answer.sources[:5]
     if shown:
         console.print("\n[bold]Sources[/bold]")
@@ -392,10 +392,16 @@ def doctor() -> None:
 
 @app.command()
 def bench(
-    track: Annotated[str, typer.Option(help="offline | live")] = "offline",
+    suite: Annotated[
+        str,
+        typer.Option(
+            help="searchbench (own) | an external task (hotpotqa, rgb-*, kazqad, simpleqa) | bfcl"
+        ),
+    ] = "searchbench",
+    track: Annotated[str, typer.Option(help="SearchBench track: offline | live")] = "offline",
     models: Annotated[str | None, typer.Option(help="Comma-separated models")] = None,
     modes: Annotated[
-        str, typer.Option(help="Comma-separated: closed,rag,agent")
+        str, typer.Option(help="Comma-separated: closed,rag,agent,multi")
     ] = "closed,rag,agent",
     limit: Annotated[int | None, typer.Option(help="Only the first N questions")] = None,
     repeats: Annotated[int, typer.Option(min=1, help="Runs per question")] = 1,
@@ -409,15 +415,50 @@ def bench(
     report_only: Annotated[
         bool, typer.Option("--report-only", help="Rebuild summary/report from --out")
     ] = False,
+    sample: Annotated[
+        int | None,
+        typer.Option(
+            help="External/BFCL: questions to sample (per category for BFCL; rgb-noise runs each "
+            "question at 3 noise rates); 0 = all"
+        ),
+    ] = None,
+    seed: Annotated[int, typer.Option(help="External/BFCL: sampling seed")] = 42,
+    data_dir: Annotated[
+        Path | None, typer.Option(help="External/BFCL: dataset download cache")
+    ] = None,
+    judge_model: Annotated[
+        str | None,
+        typer.Option(help="External tasks: Ollama model used as the answer grader, if supported"),
+    ] = None,
 ) -> None:
-    """Run SearchBench (resumable) and write runs.jsonl, summary.json and report.md."""
-    from .bench.runner import TRACKS, BenchConfig, finalize, run_bench
+    """Run a benchmark (resumable) and write runs.jsonl, summary.json and report.md.
+
+    SearchBench is this project's own benchmark. External tasks and BFCL are published
+    third-party benchmarks; their datasets are downloaded on first use.
+    """
+    from .bench.runner import TRACKS, BenchConfig, run_bench
 
     if report_only:
         if out is None:
             raise typer.BadParameter("--report-only needs --out")
-        finalize(out)
+        _finalize_any(out)
         console.print(f"rebuilt {out / 'report.md'}")
+        return
+    if suite != "searchbench":
+        _bench_other(
+            suite=suite,
+            models=models,
+            modes=modes,
+            out=out,
+            repeats=repeats,
+            categories=categories,
+            sample=sample,
+            seed=seed,
+            data_dir=data_dir,
+            judge_model=judge_model,
+            think=think,
+            num_ctx=num_ctx,
+        )
         return
     _check_choice(track, TRACKS, "--track")
     settings = state.settings.with_(think=think, num_ctx=num_ctx)
@@ -437,22 +478,7 @@ def bench(
         categories=[c.strip() for c in categories.split(",")] if categories else [],
         settings=settings,
     )
-    client = make_client(settings)
-    try:
-        names = _model_names(client)
-    except Exception as exc:
-        err.print(f"[red]cannot reach Ollama: {exc}[/red]  (run `ollamasearch doctor`)")
-        raise typer.Exit(1) from exc
-    missing = [m for m in model_list if not _has_model(names, m)]
-    if missing:
-        err.print("[red]missing models:[/red] " + ", ".join(missing))
-        err.print("Fix: " + " && ".join(f"ollama pull {m}" for m in missing))
-        raise typer.Exit(1)
-    server_version = None
-    try:
-        server_version = http_get(f"{ollama_base_url(settings)}/api/version").json().get("version")
-    except Exception:
-        logging.getLogger(__name__).debug("could not read Ollama version", exc_info=True)
+    client, server_version = _bench_client(settings, model_list)
 
     def progress(i: int, total: int, row: dict[str, Any]) -> None:
         ok = "[green]✓[/green]" if row["score"]["correct"] else "[red]✗[/red]"
@@ -479,6 +505,133 @@ def bench(
             "–" if not g["tokens_per_s"] else f"{g['tokens_per_s']:.0f}",
         )
     console.print(table)
+    console.print(f"report: {out_dir / 'report.md'}")
+
+
+def _bench_client(settings: Settings, model_list: list[str]) -> tuple[Any, str | None]:
+    """Ollama client for a benchmark run: check reachability and models, read the version."""
+    client = make_client(settings)
+    try:
+        names = _model_names(client)
+    except Exception as exc:
+        err.print(f"[red]cannot reach Ollama: {exc}[/red]  (run `ollamasearch doctor`)")
+        raise typer.Exit(1) from exc
+    missing = [m for m in model_list if not _has_model(names, m)]
+    if missing:
+        err.print("[red]missing models:[/red] " + ", ".join(missing))
+        err.print("Fix: " + " && ".join(f"ollama pull {m}" for m in missing))
+        raise typer.Exit(1)
+    server_version = None
+    try:
+        server_version = http_get(f"{ollama_base_url(settings)}/api/version").json().get("version")
+    except Exception:
+        logging.getLogger(__name__).debug("could not read Ollama version", exc_info=True)
+    return client, server_version
+
+
+def _finalize_any(out: Path) -> dict[str, Any]:
+    """Rebuild the report of any run folder, dispatching on ``meta.json``'s ``suite``."""
+    import json
+
+    from .bench.runner import finalize
+
+    meta_path = out / "meta.json"
+    meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+    suite = meta.get("suite", "searchbench")
+    if suite == "searchbench":
+        return finalize(out)
+    if suite == "bfcl":
+        from .bench.bfcl import finalize_bfcl
+
+        return finalize_bfcl(out)
+    from .bench.external.runner import finalize_external
+
+    return finalize_external(out)
+
+
+def _progress_line(i: int, total: int, row: dict[str, Any]) -> None:
+    ok = "[green]✓[/green]" if row.get("score", {}).get("correct") else "[red]✗[/red]"
+    label = row.get("category", "") if row.get("mode") in (None, "bfcl") else row["mode"]
+    console.print(
+        f"[dim]{i:>4}/{total}[/dim] {ok} {row.get('model', '')} {label:<8} "
+        f"{row.get('question_id') or row.get('id', '')}"
+    )
+
+
+def _bench_other(
+    *,
+    suite: str,
+    models: str | None,
+    modes: str,
+    out: Path | None,
+    repeats: int,
+    categories: str | None,
+    sample: int | None,
+    seed: int,
+    data_dir: Path | None,
+    judge_model: str | None,
+    think: bool | None,
+    num_ctx: int | None,
+) -> None:
+    """Third-party benchmarks: external QA tasks (through the pipelines) and BFCL."""
+    from .bench.external import available_tasks, default_data_dir
+
+    settings = state.settings.with_(think=think, num_ctx=num_ctx)
+    model_list = [m.strip() for m in (models or settings.model).split(",") if m.strip()]
+    out_dir = out or Path("bench/results") / f"{suite}-{datetime.now():%Y%m%d-%H%M%S}"
+    data = data_dir or default_data_dir()
+    if suite == "bfcl":
+        from .bench.bfcl import BFCL_CATEGORIES, BfclConfig, run_bfcl
+
+        cats = [c.strip() for c in categories.split(",")] if categories else list(BFCL_CATEGORIES)
+        for c in cats:
+            _check_choice(c, BFCL_CATEGORIES, "--categories")
+        client, server_version = _bench_client(settings, model_list)
+        console.print(f"BFCL {cats}: {model_list} -> {out_dir}")
+        run_bfcl(
+            BfclConfig(
+                models=model_list,
+                out_dir=out_dir,
+                categories=cats,
+                data_dir=data,
+                sample=sample,
+                seed=seed,
+                settings=settings,
+            ),
+            client,
+            progress=_progress_line,
+            server_version=server_version,
+        )
+        console.print(f"report: {out_dir / 'report.md'}")
+        return
+
+    _check_choice(suite, (*available_tasks(), "searchbench", "bfcl"), "--suite")
+    from .bench.external.runner import ExternalConfig, run_external
+
+    mode_list = [m.strip() for m in modes.split(",") if m.strip()]
+    for m in mode_list:
+        _check_choice(m, MODES, "--modes")
+    client, server_version = _bench_client(
+        settings, model_list + ([judge_model] if judge_model else [])
+    )
+    console.print(f"{suite}: {model_list} x {mode_list} -> {out_dir}")
+    run_external(
+        ExternalConfig(
+            task=suite,
+            models=model_list,
+            modes=mode_list,
+            out_dir=out_dir,
+            data_dir=data,
+            sample=sample,
+            seed=seed,
+            repeats=repeats,
+            judge_model=judge_model,
+            settings=settings,
+        ),
+        client,
+        progress=_progress_line,
+        server_version=server_version,
+    )
     console.print(f"report: {out_dir / 'report.md'}")
 
 

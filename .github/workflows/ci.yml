@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: "3.13"
           enable-cache: true
-      - run: uv sync --locked
+      - run: uv sync --locked --all-extras
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run mypy
@@ -31,6 +31,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
-      - run: uv sync --locked
+      - run: uv sync --locked --all-extras
       # No Ollama or network needed: tests use a fake client and local servers.
       - run: uv run pytest -q --cov --cov-report=term

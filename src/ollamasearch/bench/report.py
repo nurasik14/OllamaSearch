@@ -131,6 +131,33 @@ def render_report(summary: Mapping[str, Any]) -> str:
             )
         )
 
+    multis = [g for g in groups if "multi" in g]
+    if multis:
+        parts += ["", "## Multi-agent trace", ""]
+        parts.append(
+            _table(
+                [
+                    "Model",
+                    "LLM calls / question",
+                    "Searches / question",
+                    "Sub-questions",
+                    "Verifier rejected",
+                    "Follow-up round",
+                ],
+                [
+                    [
+                        g["model"],
+                        _num(g["multi"]["llm_calls_per_question"]),
+                        _num(g["multi"]["searches_per_question"]),
+                        _num(g["multi"]["sub_questions_per_question"]),
+                        _pct(g["multi"]["verifier_rejection_rate"]),
+                        _pct(g["multi"]["follow_up_rate"]),
+                    ]
+                    for g in multis
+                ],
+            )
+        )
+
     parts += ["", "## Other", ""]
     parts.append(
         _table(

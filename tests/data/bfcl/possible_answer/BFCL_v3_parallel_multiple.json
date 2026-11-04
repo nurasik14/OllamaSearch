@@ -1,0 +1,1 @@
+{"id": "parallel_multiple_0", "ground_truth": [{"weather.get_current": {"city": ["Tokyo", "Tokyo, Japan"]}}, {"currency_convert": {"amount": [50.0], "from_currency": ["EUR"], "to_currency": ["JPY"]}}]}

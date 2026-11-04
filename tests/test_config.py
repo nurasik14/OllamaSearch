@@ -52,3 +52,9 @@ def test_missing_dotenv_and_blank_values_ignored(tmp_path: Path) -> None:
 def test_with_ignores_none() -> None:
     s = Settings().with_(model="x", think=None)
     assert s.model == "x" and s.think is False
+
+
+def test_multi_verify_setting(tmp_path: Path) -> None:
+    assert Settings().multi_verify is True
+    env = {"OLLAMASEARCH_MULTI_VERIFY": "false", "XDG_CACHE_HOME": str(tmp_path)}
+    assert Settings.from_env(env=env, dotenv_path=None).multi_verify is False

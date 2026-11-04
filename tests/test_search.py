@@ -233,3 +233,18 @@ def test_recording_search_ignores_corrupt_record(tmp_path: Path) -> None:
     path.write_text("{not json", encoding="utf-8")
     rec = RecordingSearch(ScriptedSearch([HIT]), path, sleep=lambda s: None)
     assert rec.search("q") == HIT
+
+
+def test_corpus_from_html_serves_in_memory_pages() -> None:
+    corpus = CorpusBackend.from_html(
+        {
+            "a.html": "<title>Alpha town</title><main><p>Alpha has 120 bakeries.</p></main>",
+            "b.html": "<title>Beta town</title><main><p>Beta has a harbour.</p></main>",
+        }
+    )
+    assert corpus.directory is None
+    assert corpus.search("bakeries in Alpha", 1)[0].url == "http://corpus.local/a.html"
+    with Fetcher(transport=corpus.transport()) as f:
+        assert "120 bakeries" in f.fetch("http://corpus.local/a.html").text
+    with pytest.raises(ValueError):
+        CorpusBackend.from_html({})

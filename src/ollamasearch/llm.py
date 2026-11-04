@@ -165,9 +165,16 @@ class LLM:
             raise
 
     def chat(
-        self, messages: Sequence[Message], tools: Sequence[Mapping[str, Any]] | None = None
+        self,
+        messages: Sequence[Message],
+        tools: Sequence[Mapping[str, Any]] | None = None,
+        format: str | Mapping[str, Any] | None = None,
     ) -> ChatResult:
+        """One non-streaming call. ``format`` is passed to Ollama: ``"json"`` or a JSON Schema
+        dict for structured output (used by the multi-agent roles and the BFCL runner)."""
         extra: dict[str, Any] = {"tools": list(tools)} if tools else {}
+        if format is not None:
+            extra["format"] = format if isinstance(format, str) else dict(format)
         resp = self._call(**self._kwargs(messages, **extra))
         self.usage.add_response(resp)
         msg = _get(resp, "message")

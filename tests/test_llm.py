@@ -100,3 +100,15 @@ def test_usage_from_dict_response() -> None:
     assert u.to_dict()["tokens_per_s"] == 2.0
     u.add_response({"done_reason": "length"})
     assert u.truncated == 1
+
+
+def test_structured_output_format_is_forwarded(fake: FakeOllama) -> None:
+    schema = {"type": "object", "properties": {"q": {"type": "string"}}, "required": ["q"]}
+    fake.script = ['{"q": "x"}', "{}"]
+    llm = LLM(fake, "m")
+    assert llm.chat([], format=schema).content == '{"q": "x"}'
+    assert fake.calls[0]["format"] == schema
+    llm.chat([], format="json")
+    assert fake.calls[1]["format"] == "json"
+    llm.chat([])
+    assert "format" not in fake.calls[2]

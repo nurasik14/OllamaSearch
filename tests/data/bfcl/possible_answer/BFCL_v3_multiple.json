@@ -1,0 +1,2 @@
+{"id": "multiple_0", "ground_truth": [{"weather.get_current": {"city": ["Paris", "Paris, France"], "units": ["metric", ""]}}]}
+{"id": "multiple_1", "ground_truth": [{"currency_convert": {"amount": [100.0], "from_currency": ["USD"], "to_currency": ["EUR"]}}]}

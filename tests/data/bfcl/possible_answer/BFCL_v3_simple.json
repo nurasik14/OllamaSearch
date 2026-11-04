@@ -1,0 +1,5 @@
+{"id": "simple_0", "ground_truth": [{"calculate_triangle_area": {"base": [10], "height": [5], "unit": ["units", ""]}}]}
+{"id": "simple_1", "ground_truth": [{"math.factorial": {"number": [5]}}]}
+{"id": "simple_2", "ground_truth": [{"finance.compound_interest": {"principal": [1000.0], "rate": [0.05], "years": [3]}}]}
+{"id": "simple_3", "ground_truth": [{"sort_list": {"numbers": [[3, 1, 2]], "order": ["ascending", ""]}}]}
+{"id": "simple_4", "ground_truth": [{"book_table": {"city": ["New York", "New York, NY", "NYC"], "preferences": [{"seat": ["window"], "people": [2]}]}}]}
